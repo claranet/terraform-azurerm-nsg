@@ -3,9 +3,12 @@
 This module creates an [Azure Network Security Group](https://docs.microsoft.com/en-us/azure/virtual-network/security-overview) 
 without any rule.
 
-# Requirements
-* Azure provider >= 1.31
-* Terraform >=0.12
+## Terraform version compatibility
+ 
+| Module version | Terraform version |
+|----------------|-------------------|
+| >= 2.x.x       | 0.12.x            |
+| < 2.x.x        | 0.11.x            |
 
 ## Usage  
 
@@ -52,7 +55,7 @@ resource "azurerm_network_security_rule" "http" {
   access                     = "Allow"
   protocol                   = "Tcp"
   source_port_range          = "*"
-  destination_port_range     = ["80"]
+  destination_port_range     = "80"
   source_address_prefix      = "10.0.0.0/24"
   destination_address_prefix = "*"
 }
