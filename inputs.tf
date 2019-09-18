@@ -20,12 +20,12 @@ variable "stack" {
 
 variable "client_name" {
   description = "Client name/account used in naming"
-  type        = "string"
+  type        = string
 }
 
 variable "name_prefix" {
   description = "Optional prefix for Network Security Group name"
-  type        = "string"
+  type        = string
   default     = ""
 }
 
@@ -36,6 +36,6 @@ variable "custom_name" {
 
 variable "extra_tags" {
   description = "Additional tags to associate with your Network Security Group."
-  type        = "map"
+  type        = map(string)
   default     = {}
 }
