@@ -44,8 +44,8 @@ module "network-security-group" {
   environment         = var.environment
   stack               = var.stack
   resource_group_name = module.rg.resource_group_name
-  location            = module.az-region.location
-  location_short      = module.az-region.location_short
+  location            = module.azure-region.location
+  location_short      = module.azure-region.location_short
 
   # You can set either a prefix for generated name or a custom one for the resource naming
   custom_name = var.security_group_name
