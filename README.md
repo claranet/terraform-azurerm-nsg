@@ -1,5 +1,7 @@
 # Azure Network Security Group
 
+[![Changelog](https://img.shields.io/badge/changelog-release-green.svg)](CHANGELOG.md) [![Notice](https://img.shields.io/badge/notice-copyright-yellow.svg)](NOTICE) [![Apache V2 License](http://img.shields.io/badge/license-Apache%20V2-blue.svg)](LICENSE)[![TF Registry](https://img.shields.io/badge/terraform-registry-blue.svg)](https://registry.terraform.io/modules/claranet/vnet-peering/azurerm/)
+
 This module creates an [Azure Network Security Group](https://docs.microsoft.com/en-us/azure/virtual-network/security-overview) 
 without any rule.
 
@@ -10,37 +12,43 @@ without any rule.
 | >= 2.x.x       | 0.12.x            |
 | < 2.x.x        | 0.11.x            |
 
-## Usage  
+## Usage 
+
+This module is optimized to work with the [Claranet terraform-wrapper](https://github.com/claranet/terraform-wrapper) tool
+which set some terraform variables in the environment needed by this module.
+More details about variables set by the `terraform-wrapper` available in the [documentation](https://github.com/claranet/terraform-wrapper#environment).
 
 ```hcl
-module "az-region" {
-  source = "git::ssh://git@git.fr.clara.net/claranet/cloudnative/projects/cloud/azure/terraform/modules/regions.git?ref=vX.X.X"
+module "azure-region" {
+  source  = "claranet/regions/azurerm"
+  version = "x.x.x"
 
   azure_region = var.azure_region
 }
 
 module "rg" {
-  source = "git::ssh://git@git.fr.clara.net/claranet/cloudnative/projects/cloud/azure/terraform/modules/rg.git?ref=vX.X.X"
+  source  = "claranet/rg/azurerm"
+  version = "x.x.x"
 
-  location    = module.az-region.location
+  location    = module.azure-region.location
   client_name = var.client_name
   environment = var.environment
   stack       = var.stack
 }
 
-
 module "network-security-group" {
-    source = "git::ssh://git@git.fr.clara.net/claranet/cloudnative/projects/cloud/azure/terraform/modules/nsg.git?ref=vX.X.X"
+  source  = "claranet/nsg/azurerm"
+  version = "x.x.x"
 
-    client_name         = var.client_name
-    environment         = var.environment
-    stack               = var.stack
-    resource_group_name = module.rg.resource_group_name
-    location            = module.az-region.location
-    location_short      = module.az-region.location_short
+  client_name         = var.client_name
+  environment         = var.environment
+  stack               = var.stack
+  resource_group_name = module.rg.resource_group_name
+  location            = module.azure-region.location
+  location_short      = module.azure-region.location_short
 
-    # You can set either a prefix for generated name or a custom one for the resource naming
-    custom_name = var.security_group_name
+  # You can set either a prefix for generated name or a custom one for the resource naming
+  custom_name = var.security_group_name
 }
 
 # Single port and prefix sample
