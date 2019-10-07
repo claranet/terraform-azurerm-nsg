@@ -5,4 +5,3 @@ resource "azurerm_network_security_group" "nsg" {
 
   tags = merge(local.default_tags, var.extra_tags)
 }
-

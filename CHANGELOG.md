@@ -1,4 +1,4 @@
-# v2.0.1 - Unreleased
+# v2.0.1 - 2019-10-07
 
 Changed
   * AZ-119: Revamp README and publish this module to Terraform registry
