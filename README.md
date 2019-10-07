@@ -1,9 +1,13 @@
 # Azure Network Security Group
 
-[![Changelog](https://img.shields.io/badge/changelog-release-green.svg)](CHANGELOG.md) [![Notice](https://img.shields.io/badge/notice-copyright-yellow.svg)](NOTICE) [![Apache V2 License](http://img.shields.io/badge/license-Apache%20V2-blue.svg)](LICENSE)[![TF Registry](https://img.shields.io/badge/terraform-registry-blue.svg)](https://registry.terraform.io/modules/claranet/vnet-peering/azurerm/)
+[![Changelog](https://img.shields.io/badge/changelog-release-green.svg)](CHANGELOG.md) [![Notice](https://img.shields.io/badge/notice-copyright-yellow.svg)](NOTICE) [![Apache V2 License](https://img.shields.io/badge/license-Apache%20V2-orange.svg)](LICENSE) [![TF Registry](https://img.shields.io/badge/terraform-registry-blue.svg)](https://registry.terraform.io/modules/claranet/nsg/azurerm/)
 
 This module creates an [Azure Network Security Group](https://docs.microsoft.com/en-us/azure/virtual-network/security-overview) 
 without any rule.
+
+## Requirements
+
+* [AzureRM Terraform provider](https://www.terraform.io/docs/providers/azurerm/) >= 1.32
 
 ## Terraform version compatibility
  
@@ -109,6 +113,6 @@ resource "azurerm_network_security_rule" "custom" {
 
 ## Related documentation
 
-Microsoft Network security groups documentation: [https://docs.microsoft.com/en-us/azure/virtual-network/security-overview]
+Microsoft Network security groups documentation: [docs.microsoft.com/en-us/azure/virtual-network/security-overview](https://docs.microsoft.com/en-us/azure/virtual-network/security-overview)
 
-Terraform resource documentation: [https://www.terraform.io/docs/providers/azurerm/r/network_security_group.html]
+Terraform resource documentation: [terraform.io/docs/providers/azurerm/r/network_security_group.html](https://www.terraform.io/docs/providers/azurerm/r/network_security_group.html)
