@@ -1,7 +1,11 @@
-# Unreleased 
+# v2.1.0 / v3.0.0 - Unreleased
 
 Breaking 
   * AZ-205: Add ability to create multiple NSGs
+
+Changed
+  * AZ-198: AzureRM 2.0 compatibility
+  * AZ-209: Update CI with Gitlab template
 
 # v2.0.1 - 2019-10-07
 
