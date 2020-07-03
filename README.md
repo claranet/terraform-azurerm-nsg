@@ -5,16 +5,13 @@
 This module creates an [Azure Network Security Group](https://docs.microsoft.com/en-us/azure/virtual-network/security-overview) 
 without any rule.
 
-## Requirements
+## Version compatibility
 
-* [AzureRM Terraform provider](https://www.terraform.io/docs/providers/azurerm/) >= 1.32
-
-## Terraform version compatibility
- 
-| Module version | Terraform version |
-|----------------|-------------------|
-| >= 2.x.x       | 0.12.x            |
-| < 2.x.x        | 0.11.x            |
+| Module version    | Terraform version | AzureRM version |
+|-------------------|-------------------|-----------------|
+| >= 3.x.x          | 0.12.x            | >= 2.0          |
+| >= 2.x.x, < 3.x.x | 0.12.x            | <  2.0          |
+| <  2.x.x          | 0.11.x            | <  2.0          |
 
 ## Usage 
 
@@ -52,7 +49,7 @@ module "network-security-group" {
   location_short      = module.azure-region.location_short
 
   # You can set either a prefix for generated name or a custom one for the resource naming
-  custom_name = var.security_group_name
+  custom_network_security_group_names = [var.security_group_name]
 }
 
 # Single port and prefix sample
@@ -60,7 +57,7 @@ resource "azurerm_network_security_rule" "http" {
   name = "my-http-rule"
 
   resource_group_name         = module.rg.resource_group_name
-  network_security_group_name = module.network-security-group.network_security_group_name
+  network_security_group_name = module.network-security-group.network_security_group_name[0]
 
   priority                   = 100
   direction                  = "Inbound"
@@ -77,7 +74,7 @@ resource "azurerm_network_security_rule" "custom" {
   name = "my-custom-rule"
 
   resource_group_name         = module.rg.resource_group_name
-  network_security_group_name = module.network-security-group.network_security_group_name
+  network_security_group_name = module.network-security-group.network_security_group_name[0]
 
   priority                   = 200
   direction                  = "Inbound"
@@ -93,16 +90,17 @@ resource "azurerm_network_security_rule" "custom" {
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|:----:|:-----:|:-----:|
-| client\_name | Client name/account used in naming | string | n/a | yes |
-| custom\_name | Custom Network Security Group name, generated if not set | string | `""` | no |
-| environment | Project environment | string | n/a | yes |
-| extra\_tags | Additional tags to associate with your Network Security Group. | map(string) | `<map>` | no |
-| location | Azure region to use | string | n/a | yes |
-| location\_short | Short string for Azure location | string | n/a | yes |
-| name\_prefix | Optional prefix for Network Security Group name | string | `""` | no |
-| resource\_group\_name | Name of the resource group | string | n/a | yes |
-| stack | Project stack name | string | n/a | yes |
+|------|-------------|------|---------|:-----:|
+| client\_name | Client name/account used in naming | `string` | n/a | yes |
+| custom\_network\_security\_group\_names | List of Network Security Group custom names. | `list(string)` | <pre>[<br>  ""<br>]</pre> | no |
+| environment | Project environment | `string` | n/a | yes |
+| extra\_tags | Additional tags to associate with your Network Security Group. | `map(string)` | `{}` | no |
+| location | Azure location. | `string` | n/a | yes |
+| location\_short | Short string for Azure location. | `string` | n/a | yes |
+| name\_prefix | Optional prefix for Network Security Group name | `string` | `""` | no |
+| network\_security\_group\_instances | Number of Network Security Group to create. | `number` | `1` | no |
+| resource\_group\_name | Resource group name | `string` | n/a | yes |
+| stack | Project stack name | `string` | n/a | yes |
 
 ## Outputs
 
