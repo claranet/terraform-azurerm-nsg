@@ -90,7 +90,7 @@ resource "azurerm_network_security_rule" "custom" {
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:-----:|
+|------|-------------|------|---------|:--------:|
 | client\_name | Client name/account used in naming | `string` | n/a | yes |
 | custom\_network\_security\_group\_names | List of Network Security Group custom names. | `list(string)` | <pre>[<br>  ""<br>]</pre> | no |
 | environment | Project environment | `string` | n/a | yes |
