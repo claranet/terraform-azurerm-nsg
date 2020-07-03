@@ -1,4 +1,4 @@
-# v2.1.0 / v3.0.0 - Unreleased
+# v2.1.0 / v3.0.0 - 2020-07-03
 
 Breaking 
   * AZ-205: Add ability to create multiple NSGs
