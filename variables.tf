@@ -34,20 +34,14 @@ variable "name_prefix" {
   default     = ""
 }
 
-variable "custom_network_security_group_names" {
-  description = "List of Network Security Group custom names."
-  type        = list(string)
-  default     = [""]
+variable "custom_network_security_group_name" {
+  description = "Security Group custom name."
+  type        = string
+  default     = null
 }
 
 variable "extra_tags" {
   description = "Additional tags to associate with your Network Security Group."
   type        = map(string)
   default     = {}
-}
-
-variable "network_security_group_instances" {
-  description = "Number of Network Security Group to create."
-  type        = number
-  default     = 1
 }
