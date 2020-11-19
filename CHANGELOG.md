@@ -1,4 +1,4 @@
-# v4.0.0 - Unreleased
+# v4.0.0 - 2020-11-19
 
 Breaking:
   * AZ-344: Upgrade module to tf0.13. Remove all count instances
