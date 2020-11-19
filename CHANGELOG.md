@@ -1,3 +1,11 @@
+# v4.0.0 - Unreleased
+
+Breaking:
+  * AZ-344: Upgrade module to tf0.13. Remove all count instances
+  
+Changed:
+  * AZ-273: Upgrade CI
+  
 # v2.1.0 / v3.0.0 - 2020-07-03
 
 Breaking 
