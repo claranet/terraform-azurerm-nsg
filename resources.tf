@@ -1,5 +1,5 @@
 resource "azurerm_network_security_group" "nsg" {
-  name = coalesce(var.custom_network_security_group_name, local.default_name)
+  name = local.nsg_name
 
   resource_group_name = var.resource_group_name
   location            = var.location
