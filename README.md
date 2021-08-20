@@ -8,7 +8,8 @@ without any rule.
 ## Version compatibility
 
 | Module version    | Terraform version | AzureRM version |
-|-------------------|-------------------|-----------------|
+| ----------------- | ----------------- | --------------- |
+| >= 5.x.x          | 0.15.x & 1.0.x    | >= 2.0          |
 | >= 4.x.x          | 0.13.x            | >= 2.0          |
 | >= 3.x.x          | 0.12.x            | >= 2.0          |
 | >= 2.x.x, < 3.x.x | 0.12.x            | <  2.0          |
@@ -113,6 +114,23 @@ resource "azurerm_network_security_rule" "denyAll" {
 }
 ```
 
+<!-- BEGIN_TF_DOCS -->
+## Providers
+
+| Name | Version |
+|------|---------|
+| azurerm | >= 1.44 |
+
+## Modules
+
+No modules.
+
+## Resources
+
+| Name | Type |
+|------|------|
+| [azurerm_network_security_group.nsg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_group) | resource |
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -133,9 +151,7 @@ resource "azurerm_network_security_rule" "denyAll" {
 |------|-------------|
 | network\_security\_group\_id | Network security group id |
 | network\_security\_group\_name | Network security group name |
-
+<!-- END_TF_DOCS -->
 ## Related documentation
 
 Microsoft Network security groups documentation: [docs.microsoft.com/en-us/azure/virtual-network/security-overview](https://docs.microsoft.com/en-us/azure/virtual-network/security-overview)
-
-Terraform resource documentation: [terraform.io/docs/providers/azurerm/r/network_security_group.html](https://www.terraform.io/docs/providers/azurerm/r/network_security_group.html)
