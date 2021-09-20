@@ -5,27 +5,25 @@
 This module creates an [Azure Network Security Group](https://docs.microsoft.com/en-us/azure/virtual-network/security-overview) 
 without any rule.
 
-## Version compatibility
+<!-- BEGIN_TF_DOCS -->
+## Global versionning rule for Claranet Azure modules
 
-| Module version    | Terraform version | AzureRM version |
-| ----------------- | ----------------- | --------------- |
-| >= 5.x.x          | 0.15.x & 1.0.x    | >= 2.0          |
-| >= 4.x.x          | 0.13.x            | >= 2.0          |
-| >= 3.x.x          | 0.12.x            | >= 2.0          |
-| >= 2.x.x, < 3.x.x | 0.12.x            | <  2.0          |
-| <  2.x.x          | 0.11.x            | <  2.0          |
+| Module version | Terraform version | AzureRM version |
+| -------------- | ----------------- | --------------- |
+| >= 5.x.x       | 0.15.x & 1.0.x    | >= 2.0          |
+| >= 4.x.x       | 0.13.x            | >= 2.0          |
+| >= 3.x.x       | 0.12.x            | >= 2.0          |
+| >= 2.x.x       | 0.12.x            | < 2.0           |
+| <  2.x.x       | 0.11.x            | < 2.0           |
 
-## Usage 
+## Usage
 
 This module is optimized to work with the [Claranet terraform-wrapper](https://github.com/claranet/terraform-wrapper) tool
 which set some terraform variables in the environment needed by this module.
 More details about variables set by the `terraform-wrapper` available in the [documentation](https://github.com/claranet/terraform-wrapper#environment).
 
 ```hcl
-locals {
-  network_security_group_names = ["nsg1", "nsg2", "nsg3"]
-}
-module "azure-region" {
+module "azure_region" {
   source  = "claranet/regions/azurerm"
   version = "x.x.x"
 
@@ -36,27 +34,26 @@ module "rg" {
   source  = "claranet/rg/azurerm"
   version = "x.x.x"
 
-  location    = module.azure-region.location
+  location    = module.azure_region.location
   client_name = var.client_name
   environment = var.environment
   stack       = var.stack
 }
 
-module "network-security-group" {
-  for_each = toset(local.network_security_group_names)
-
+module "network_security_group" {
   source  = "claranet/nsg/azurerm"
   version = "x.x.x"
 
-  client_name         = var.client_name
-  environment         = var.environment
-  stack               = var.stack
+  client_name    = var.client_name
+  environment    = var.environment
+  stack          = var.stack
+  location       = module.azure_region.location
+  location_short = module.azure_region.location_short
+
   resource_group_name = module.rg.resource_group_name
-  location            = module.azure-region.location
-  location_short      = module.azure-region.location_short
 
   # You can set either a prefix for generated name or a custom one for the resource naming
-  custom_network_security_group_names = each.key
+  #custom_network_security_group_names = "my_nsg"
 }
 
 # Single port and prefix sample
@@ -64,7 +61,7 @@ resource "azurerm_network_security_rule" "http" {
   name = "my-http-rule"
 
   resource_group_name         = module.rg.resource_group_name
-  network_security_group_name = module.network-security-group["nsg1"].network_security_group_name
+  network_security_group_name = module.network_security_group.network_security_group_name
 
   priority                   = 100
   direction                  = "Inbound"
@@ -81,7 +78,7 @@ resource "azurerm_network_security_rule" "custom" {
   name = "my-custom-rule"
 
   resource_group_name         = module.rg.resource_group_name
-  network_security_group_name = module.network-security-group["nsg1"].network_security_group_name
+  network_security_group_name = module.network_security_group.network_security_group_name
 
   priority                   = 200
   direction                  = "Inbound"
@@ -94,14 +91,12 @@ resource "azurerm_network_security_rule" "custom" {
 }
 
 # Deny all sample. Apply on all NSG
-resource "azurerm_network_security_rule" "denyAll" {
-  for_each = toset(local.network_security_group_names)
-
+resource "azurerm_network_security_rule" "deny_all" {
   name = "DenyAll"
-  
+
   resource_group_name         = module.rg.resource_group_name
-  network_security_group_name = each.key
-  
+  network_security_group_name = module.network_security_group.network_security_group_name
+
   priority                   = 4096
   direction                  = "Inbound"
   access                     = "Allow"
@@ -109,12 +104,11 @@ resource "azurerm_network_security_rule" "denyAll" {
   source_port_range          = "*"
   destination_port_range     = "*"
   source_address_prefix      = "*"
-  destination_Address_prefix = "*"
-  
+  destination_address_prefix = "*"
 }
+
 ```
 
-<!-- BEGIN_TF_DOCS -->
 ## Providers
 
 | Name | Version |
