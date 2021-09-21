@@ -6,7 +6,7 @@ This module creates an [Azure Network Security Group](https://docs.microsoft.com
 without any rule.
 
 <!-- BEGIN_TF_DOCS -->
-## Global versionning rule for Claranet Azure modules
+## Global versioning rule for Claranet Azure modules
 
 | Module version | Terraform version | AzureRM version |
 | -------------- | ----------------- | --------------- |
