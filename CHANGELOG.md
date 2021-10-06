@@ -1,5 +1,8 @@
 # Unreleased
 
+Added
+  * AZ-582: Add predefined rules
+
 Changed
   * AZ-572: Revamp examples and improve CI
 

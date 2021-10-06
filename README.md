@@ -52,13 +52,18 @@ module "network_security_group" {
 
   resource_group_name = module.rg.resource_group_name
 
+  deny_all_inbound = true # Recommended
+
+  https_inbound_allowed   = true
+  allowed_https_cidr_list = ["11.12.13.14/32", "10.0.0.0/24"]
+
   # You can set either a prefix for generated name or a custom one for the resource naming
   #custom_network_security_group_names = "my_nsg"
 }
 
 # Single port and prefix sample
-resource "azurerm_network_security_rule" "http" {
-  name = "my-http-rule"
+resource "azurerm_network_security_rule" "mysql" {
+  name = "my-mysql-rule"
 
   resource_group_name         = module.rg.resource_group_name
   network_security_group_name = module.network_security_group.network_security_group_name
@@ -68,7 +73,7 @@ resource "azurerm_network_security_rule" "http" {
   access                     = "Allow"
   protocol                   = "Tcp"
   source_port_range          = "*"
-  destination_port_range     = "80"
+  destination_port_range     = "3306"
   source_address_prefix      = "10.0.0.0/24"
   destination_address_prefix = "*"
 }
@@ -85,25 +90,8 @@ resource "azurerm_network_security_rule" "custom" {
   access                     = "Allow"
   protocol                   = "Tcp"
   source_port_range          = "*"
-  destination_port_ranges    = ["22", "80", "1000-2000"]
+  destination_port_ranges    = ["8080", "1000-2000"]
   source_address_prefixes    = ["10.0.0.0/24", "10.1.0.0/24"]
-  destination_address_prefix = "*"
-}
-
-# Deny all sample. Apply on all NSG
-resource "azurerm_network_security_rule" "deny_all" {
-  name = "DenyAll"
-
-  resource_group_name         = module.rg.resource_group_name
-  network_security_group_name = module.network_security_group.network_security_group_name
-
-  priority                   = 4096
-  direction                  = "Inbound"
-  access                     = "Allow"
-  protocol                   = "Tcp"
-  source_port_range          = "*"
-  destination_port_range     = "*"
-  source_address_prefix      = "*"
   destination_address_prefix = "*"
 }
 
@@ -124,20 +112,37 @@ No modules.
 | Name | Type |
 |------|------|
 | [azurerm_network_security_group.nsg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_group) | resource |
+| [azurerm_network_security_rule.deny_all](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule) | resource |
+| [azurerm_network_security_rule.http](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule) | resource |
+| [azurerm_network_security_rule.https](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule) | resource |
+| [azurerm_network_security_rule.rdp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule) | resource |
+| [azurerm_network_security_rule.ssh](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule) | resource |
+| [azurerm_network_security_rule.winrm](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| allowed\_http\_cidr\_list | List of CIDR allowed for inbound HTTP traffic | `list(string)` | `[]` | no |
+| allowed\_https\_cidr\_list | List of CIDR allowed for inbound HTTPS traffic | `list(string)` | `[]` | no |
+| allowed\_rdp\_cidr\_list | List of CIDR allowed for inbound RDP traffic | `list(string)` | `[]` | no |
+| allowed\_ssh\_cidr\_list | List of CIDR allowed for inbound SSH traffic | `list(string)` | `[]` | no |
+| allowed\_winrm\_cidr\_list | List of CIDR allowed for inbound WinRM traffic | `list(string)` | `[]` | no |
 | client\_name | Client name/account used in naming | `string` | n/a | yes |
 | custom\_network\_security\_group\_name | Security Group custom name. | `string` | `null` | no |
+| deny\_all\_inbound | True to deny all inbound traffic by default | `bool` | `false` | no |
 | environment | Project environment | `string` | n/a | yes |
 | extra\_tags | Additional tags to associate with your Network Security Group. | `map(string)` | `{}` | no |
+| http\_inbound\_allowed | True to allow inbound HTTP traffic | `bool` | `false` | no |
+| https\_inbound\_allowed | True to allow inbound HTTPS traffic | `bool` | `false` | no |
 | location | Azure location. | `string` | n/a | yes |
 | location\_short | Short string for Azure location. | `string` | n/a | yes |
 | name\_prefix | Optional prefix for Network Security Group name | `string` | `""` | no |
+| rdp\_inbound\_allowed | True to allow inbound RDP traffic | `bool` | `false` | no |
 | resource\_group\_name | Resource group name | `string` | n/a | yes |
+| ssh\_inbound\_allowed | True to allow inbound SSH traffic | `bool` | `false` | no |
 | stack | Project stack name | `string` | n/a | yes |
+| winrm\_inbound\_allowed | True to allow inbound WinRM traffic | `bool` | `false` | no |
 
 ## Outputs
 
