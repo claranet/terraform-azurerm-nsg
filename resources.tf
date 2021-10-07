@@ -36,7 +36,7 @@ resource "azurerm_network_security_rule" "http" {
   source_port_range           = "*"
   destination_port_range      = "80"
   source_address_prefixes     = var.allowed_http_cidr_list
-  destination_address_prefix  = "*"
+  destination_address_prefix  = "VirtualNetwork"
 }
 
 resource "azurerm_network_security_rule" "https" {
@@ -52,7 +52,7 @@ resource "azurerm_network_security_rule" "https" {
   source_port_range           = "*"
   destination_port_range      = "443"
   source_address_prefixes     = var.allowed_https_cidr_list
-  destination_address_prefix  = "*"
+  destination_address_prefix  = "VirtualNetwork"
 }
 
 resource "azurerm_network_security_rule" "ssh" {
@@ -68,7 +68,7 @@ resource "azurerm_network_security_rule" "ssh" {
   source_port_range           = "*"
   destination_port_range      = "22"
   source_address_prefixes     = var.allowed_ssh_cidr_list
-  destination_address_prefix  = "*"
+  destination_address_prefix  = "VirtualNetwork"
 }
 
 resource "azurerm_network_security_rule" "rdp" {
@@ -84,7 +84,7 @@ resource "azurerm_network_security_rule" "rdp" {
   source_port_range           = "*"
   destination_port_range      = "3389"
   source_address_prefixes     = var.allowed_rdp_cidr_list
-  destination_address_prefix  = "*"
+  destination_address_prefix  = "VirtualNetwork"
 }
 
 resource "azurerm_network_security_rule" "winrm" {
@@ -100,5 +100,5 @@ resource "azurerm_network_security_rule" "winrm" {
   source_port_range           = "*"
   destination_port_range      = "5985"
   source_address_prefixes     = var.allowed_winrm_cidr_list
-  destination_address_prefix  = "*"
+  destination_address_prefix  = "VirtualNetwork"
 }
