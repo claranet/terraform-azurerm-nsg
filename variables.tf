@@ -151,3 +151,15 @@ variable "allowed_winrm_source" {
     error_message = "Variable must be a Service Tag, \"*\" or a list of CIDR."
   }
 }
+
+variable "application_gateway_rules_enabled" {
+  description = "True to configure rules mandatory for hosting an Application Gateway. See https://docs.microsoft.com/en-us/azure/application-gateway/configuration-infrastructure#allow-access-to-a-few-source-ips"
+  type        = bool
+  default     = false
+}
+
+variable "load_balancer_rules_enabled" {
+  description = "True to configure rules mandatory for hosting a Load Balancer."
+  type        = bool
+  default     = false
+}

@@ -107,3 +107,51 @@ resource "azurerm_network_security_rule" "winrm" {
   source_address_prefixes     = try(tolist(var.allowed_winrm_source), null)
   destination_address_prefix  = "VirtualNetwork"
 }
+
+resource "azurerm_network_security_rule" "appgw_health" {
+  for_each = toset(var.application_gateway_rules_enabled ? ["enabled"] : [])
+
+  name                        = "appgw-health-inbound"
+  resource_group_name         = var.resource_group_name
+  access                      = "Allow"
+  direction                   = "Inbound"
+  network_security_group_name = azurerm_network_security_group.nsg.name
+  priority                    = 4005
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_ranges     = ["65200-65535"]
+  source_address_prefix       = "GatewayManager"
+  destination_address_prefix  = "VirtualNetwork"
+}
+
+resource "azurerm_network_security_rule" "lb_inbound" {
+  for_each = toset(var.application_gateway_rules_enabled || var.load_balancer_rules_enabled ? ["enabled"] : [])
+
+  name                        = "lb-inbound"
+  resource_group_name         = var.resource_group_name
+  access                      = "Allow"
+  direction                   = "Inbound"
+  network_security_group_name = azurerm_network_security_group.nsg.name
+  priority                    = 4006
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "*"
+  source_address_prefix       = "AzureLoadBalancer"
+  destination_address_prefix  = "VirtualNetwork"
+}
+
+resource "azurerm_network_security_rule" "vnet_inbound" {
+  for_each = toset(var.application_gateway_rules_enabled || var.load_balancer_rules_enabled ? ["enabled"] : [])
+
+  name                        = "vnet-inbound"
+  resource_group_name         = var.resource_group_name
+  access                      = "Allow"
+  direction                   = "Inbound"
+  network_security_group_name = azurerm_network_security_group.nsg.name
+  priority                    = 4007
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "*"
+  source_address_prefix       = "VirtualNetwork"
+  destination_address_prefix  = "VirtualNetwork"
+}
