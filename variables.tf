@@ -58,10 +58,18 @@ variable "http_inbound_allowed" {
   default     = false
 }
 
-variable "allowed_http_cidr_list" {
-  description = "List of CIDR allowed for inbound HTTP traffic"
-  type        = list(string)
+variable "allowed_http_source" {
+  description = "Allowed source for inbound HTTP traffic. Can be a Service Tag, \"*\" or a CIDR list."
+  type        = any
   default     = []
+  validation {
+    condition = (
+      var.allowed_http_source != null &&
+      var.allowed_http_source != "" &&
+      (can(tolist(var.allowed_http_source)) || can(tostring(var.allowed_http_source)))
+    )
+    error_message = "Variable must be a Service Tag, \"*\" or a list of CIDR."
+  }
 }
 
 variable "https_inbound_allowed" {
@@ -70,10 +78,18 @@ variable "https_inbound_allowed" {
   default     = false
 }
 
-variable "allowed_https_cidr_list" {
-  description = "List of CIDR allowed for inbound HTTPS traffic"
-  type        = list(string)
+variable "allowed_https_source" {
+  description = "Allowed source for inbound HTTPS traffic. Can be a Service Tag, \"*\" or a CIDR list."
+  type        = any
   default     = []
+  validation {
+    condition = (
+      var.allowed_https_source != null &&
+      var.allowed_https_source != "" &&
+      (can(tolist(var.allowed_https_source)) || can(tostring(var.allowed_https_source)))
+    )
+    error_message = "Variable must be a Service Tag, \"*\" or a list of CIDR."
+  }
 }
 
 variable "ssh_inbound_allowed" {
@@ -82,10 +98,18 @@ variable "ssh_inbound_allowed" {
   default     = false
 }
 
-variable "allowed_ssh_cidr_list" {
-  description = "List of CIDR allowed for inbound SSH traffic"
-  type        = list(string)
+variable "allowed_ssh_source" {
+  description = "Allowed source for inbound SSH traffic. Can be a Service Tag, \"*\" or a CIDR list."
+  type        = any
   default     = []
+  validation {
+    condition = (
+      var.allowed_ssh_source != null &&
+      var.allowed_ssh_source != "" &&
+      (can(tolist(var.allowed_ssh_source)) || can(tostring(var.allowed_ssh_source)))
+    )
+    error_message = "Variable must be a Service Tag, \"*\" or a list of CIDR."
+  }
 }
 
 variable "rdp_inbound_allowed" {
@@ -94,10 +118,18 @@ variable "rdp_inbound_allowed" {
   default     = false
 }
 
-variable "allowed_rdp_cidr_list" {
-  description = "List of CIDR allowed for inbound RDP traffic"
-  type        = list(string)
+variable "allowed_rdp_source" {
+  description = "Allowed source for inbound RDP traffic. Can be a Service Tag, \"*\" or a CIDR list."
+  type        = any
   default     = []
+  validation {
+    condition = (
+      var.allowed_rdp_source != null &&
+      var.allowed_rdp_source != "" &&
+      (can(tolist(var.allowed_rdp_source)) || can(tostring(var.allowed_rdp_source)))
+    )
+    error_message = "Variable must be a Service Tag, \"*\" or a list of CIDR."
+  }
 }
 
 variable "winrm_inbound_allowed" {
@@ -106,8 +138,16 @@ variable "winrm_inbound_allowed" {
   default     = false
 }
 
-variable "allowed_winrm_cidr_list" {
-  description = "List of CIDR allowed for inbound WinRM traffic"
-  type        = list(string)
+variable "allowed_winrm_source" {
+  description = "Allowed source for inbound WinRM traffic. Can be a Service Tag, \"*\" or a CIDR list."
+  type        = any
   default     = []
+  validation {
+    condition = (
+      var.allowed_winrm_source != null &&
+      var.allowed_winrm_source != "" &&
+      (can(tolist(var.allowed_winrm_source)) || can(tostring(var.allowed_winrm_source)))
+    )
+    error_message = "Variable must be a Service Tag, \"*\" or a list of CIDR."
+  }
 }

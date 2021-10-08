@@ -29,8 +29,11 @@ module "network_security_group" {
 
   deny_all_inbound = true # Recommended
 
-  https_inbound_allowed   = true
-  allowed_https_cidr_list = ["11.12.13.14/32", "10.0.0.0/24"]
+  https_inbound_allowed = true
+  allowed_https_source  = ["11.12.13.14/32", "10.0.0.0/24"]
+
+  ssh_inbound_allowed = true
+  allowed_ssh_source  = "VirtualNetwork"
 
   # You can set either a prefix for generated name or a custom one for the resource naming
   #custom_network_security_group_names = "my_nsg"

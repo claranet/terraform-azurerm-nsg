@@ -54,8 +54,11 @@ module "network_security_group" {
 
   deny_all_inbound = true # Recommended
 
-  https_inbound_allowed   = true
-  allowed_https_cidr_list = ["11.12.13.14/32", "10.0.0.0/24"]
+  https_inbound_allowed = true
+  allowed_https_source  = ["11.12.13.14/32", "10.0.0.0/24"]
+
+  ssh_inbound_allowed = true
+  allowed_ssh_source  = "VirtualNetwork"
 
   # You can set either a prefix for generated name or a custom one for the resource naming
   #custom_network_security_group_names = "my_nsg"
@@ -123,11 +126,11 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| allowed\_http\_cidr\_list | List of CIDR allowed for inbound HTTP traffic | `list(string)` | `[]` | no |
-| allowed\_https\_cidr\_list | List of CIDR allowed for inbound HTTPS traffic | `list(string)` | `[]` | no |
-| allowed\_rdp\_cidr\_list | List of CIDR allowed for inbound RDP traffic | `list(string)` | `[]` | no |
-| allowed\_ssh\_cidr\_list | List of CIDR allowed for inbound SSH traffic | `list(string)` | `[]` | no |
-| allowed\_winrm\_cidr\_list | List of CIDR allowed for inbound WinRM traffic | `list(string)` | `[]` | no |
+| allowed\_http\_source | Allowed source for inbound HTTP traffic. Can be a Service Tag, "*" or a CIDR list. | `any` | `[]` | no |
+| allowed\_https\_source | Allowed source for inbound HTTPS traffic. Can be a Service Tag, "*" or a CIDR list. | `any` | `[]` | no |
+| allowed\_rdp\_source | Allowed source for inbound RDP traffic. Can be a Service Tag, "*" or a CIDR list. | `any` | `[]` | no |
+| allowed\_ssh\_source | Allowed source for inbound SSH traffic. Can be a Service Tag, "*" or a CIDR list. | `any` | `[]` | no |
+| allowed\_winrm\_source | Allowed source for inbound WinRM traffic. Can be a Service Tag, "*" or a CIDR list. | `any` | `[]` | no |
 | client\_name | Client name/account used in naming | `string` | n/a | yes |
 | custom\_network\_security\_group\_name | Security Group custom name. | `string` | `null` | no |
 | deny\_all\_inbound | True to deny all inbound traffic by default | `bool` | `false` | no |
