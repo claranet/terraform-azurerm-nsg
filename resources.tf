@@ -7,7 +7,7 @@ resource "azurerm_network_security_group" "nsg" {
   tags = merge(local.default_tags, var.extra_tags)
 }
 
-resource "azurerm_network_security_rule" "deny_all" {
+resource "azurerm_network_security_rule" "deny_all_inbound" {
   for_each = toset(var.deny_all_inbound ? ["enabled"] : [])
 
   name                        = "deny-all-inbound"
@@ -23,7 +23,7 @@ resource "azurerm_network_security_rule" "deny_all" {
   destination_address_prefix  = "*"
 }
 
-resource "azurerm_network_security_rule" "http" {
+resource "azurerm_network_security_rule" "http_inbound" {
   for_each = toset(var.http_inbound_allowed ? ["enabled"] : [])
 
   name                        = "http-inbound"
@@ -40,7 +40,7 @@ resource "azurerm_network_security_rule" "http" {
   destination_address_prefix  = "VirtualNetwork"
 }
 
-resource "azurerm_network_security_rule" "https" {
+resource "azurerm_network_security_rule" "https_inbound" {
   for_each = toset(var.https_inbound_allowed ? ["enabled"] : [])
 
   name                        = "https-inbound"
@@ -57,7 +57,7 @@ resource "azurerm_network_security_rule" "https" {
   destination_address_prefix  = "VirtualNetwork"
 }
 
-resource "azurerm_network_security_rule" "ssh" {
+resource "azurerm_network_security_rule" "ssh_inbound" {
   for_each = toset(var.ssh_inbound_allowed ? ["enabled"] : [])
 
   name                        = "ssh-inbound"
@@ -74,7 +74,7 @@ resource "azurerm_network_security_rule" "ssh" {
   destination_address_prefix  = "VirtualNetwork"
 }
 
-resource "azurerm_network_security_rule" "rdp" {
+resource "azurerm_network_security_rule" "rdp_inbound" {
   for_each = toset(var.rdp_inbound_allowed ? ["enabled"] : [])
 
   name                        = "rdp-inbound"
@@ -91,7 +91,7 @@ resource "azurerm_network_security_rule" "rdp" {
   destination_address_prefix  = "VirtualNetwork"
 }
 
-resource "azurerm_network_security_rule" "winrm" {
+resource "azurerm_network_security_rule" "winrm_inbound" {
   for_each = toset(var.winrm_inbound_allowed ? ["enabled"] : [])
 
   name                        = "ssh-inbound"
@@ -108,10 +108,10 @@ resource "azurerm_network_security_rule" "winrm" {
   destination_address_prefix  = "VirtualNetwork"
 }
 
-resource "azurerm_network_security_rule" "appgw_health" {
+resource "azurerm_network_security_rule" "appgw_health_probe_inbound" {
   for_each = toset(var.application_gateway_rules_enabled ? ["enabled"] : [])
 
-  name                        = "appgw-health-inbound"
+  name                        = "appgw-health-probe-inbound"
   resource_group_name         = var.resource_group_name
   access                      = "Allow"
   direction                   = "Inbound"
@@ -124,10 +124,10 @@ resource "azurerm_network_security_rule" "appgw_health" {
   destination_address_prefix  = "VirtualNetwork"
 }
 
-resource "azurerm_network_security_rule" "lb_inbound" {
+resource "azurerm_network_security_rule" "lb_health_probe_inbound" {
   for_each = toset(var.application_gateway_rules_enabled || var.load_balancer_rules_enabled ? ["enabled"] : [])
 
-  name                        = "lb-inbound"
+  name                        = "lb-health-probe-inbound"
   resource_group_name         = var.resource_group_name
   access                      = "Allow"
   direction                   = "Inbound"
@@ -137,21 +137,5 @@ resource "azurerm_network_security_rule" "lb_inbound" {
   source_port_range           = "*"
   destination_port_range      = "*"
   source_address_prefix       = "AzureLoadBalancer"
-  destination_address_prefix  = "VirtualNetwork"
-}
-
-resource "azurerm_network_security_rule" "vnet_inbound" {
-  for_each = toset(var.application_gateway_rules_enabled || var.load_balancer_rules_enabled ? ["enabled"] : [])
-
-  name                        = "vnet-inbound"
-  resource_group_name         = var.resource_group_name
-  access                      = "Allow"
-  direction                   = "Inbound"
-  network_security_group_name = azurerm_network_security_group.nsg.name
-  priority                    = 4007
-  protocol                    = "Tcp"
-  source_port_range           = "*"
-  destination_port_range      = "*"
-  source_address_prefix       = "VirtualNetwork"
   destination_address_prefix  = "VirtualNetwork"
 }
