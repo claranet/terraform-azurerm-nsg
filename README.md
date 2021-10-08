@@ -5,6 +5,8 @@
 This module creates an [Azure Network Security Group](https://docs.microsoft.com/en-us/azure/virtual-network/security-overview) 
 with possible predefined rules.
 
+The default module configuration deny all inbound traffic.
+
 <!-- BEGIN_TF_DOCS -->
 ## Global versioning rule for Claranet Azure modules
 
@@ -52,7 +54,8 @@ module "network_security_group" {
 
   resource_group_name = module.rg.resource_group_name
 
-  deny_all_inbound = true # Recommended
+  # To deactivate default deny all rule (not recommended)
+  # deny_all_inbound = false
 
   https_inbound_allowed = true
   allowed_https_source  = ["11.12.13.14/32", "10.0.0.0/24"]
@@ -133,7 +136,7 @@ No modules.
 | allowed\_winrm\_source | Allowed source for inbound WinRM traffic. Can be a Service Tag, "*" or a CIDR list. | `any` | `[]` | no |
 | client\_name | Client name/account used in naming | `string` | n/a | yes |
 | custom\_network\_security\_group\_name | Security Group custom name. | `string` | `null` | no |
-| deny\_all\_inbound | True to deny all inbound traffic by default | `bool` | `false` | no |
+| deny\_all\_inbound | True to deny all inbound traffic by default | `bool` | `true` | no |
 | environment | Project environment | `string` | n/a | yes |
 | extra\_tags | Additional tags to associate with your Network Security Group. | `map(string)` | `{}` | no |
 | http\_inbound\_allowed | True to allow inbound HTTP traffic | `bool` | `false` | no |

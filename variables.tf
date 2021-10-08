@@ -49,7 +49,7 @@ variable "extra_tags" {
 variable "deny_all_inbound" {
   description = "True to deny all inbound traffic by default"
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "http_inbound_allowed" {

@@ -27,7 +27,8 @@ module "network_security_group" {
 
   resource_group_name = module.rg.resource_group_name
 
-  deny_all_inbound = true # Recommended
+  # To deactivate default deny all rule (not recommended)
+  # deny_all_inbound = false
 
   https_inbound_allowed = true
   allowed_https_source  = ["11.12.13.14/32", "10.0.0.0/24"]

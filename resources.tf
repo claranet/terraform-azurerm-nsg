@@ -10,7 +10,7 @@ resource "azurerm_network_security_group" "nsg" {
 resource "azurerm_network_security_rule" "deny_all" {
   for_each = toset(var.deny_all_inbound ? ["enabled"] : [])
 
-  name                        = "Deny All"
+  name                        = "deny-all-inbound"
   resource_group_name         = var.resource_group_name
   access                      = "Deny"
   direction                   = "Inbound"
@@ -26,7 +26,7 @@ resource "azurerm_network_security_rule" "deny_all" {
 resource "azurerm_network_security_rule" "http" {
   for_each = toset(var.http_inbound_allowed ? ["enabled"] : [])
 
-  name                        = "HTTP"
+  name                        = "http-inbound"
   resource_group_name         = var.resource_group_name
   access                      = "Allow"
   direction                   = "Inbound"
@@ -43,7 +43,7 @@ resource "azurerm_network_security_rule" "http" {
 resource "azurerm_network_security_rule" "https" {
   for_each = toset(var.https_inbound_allowed ? ["enabled"] : [])
 
-  name                        = "HTTPS"
+  name                        = "https-inbound"
   resource_group_name         = var.resource_group_name
   access                      = "Allow"
   direction                   = "Inbound"
@@ -60,7 +60,7 @@ resource "azurerm_network_security_rule" "https" {
 resource "azurerm_network_security_rule" "ssh" {
   for_each = toset(var.ssh_inbound_allowed ? ["enabled"] : [])
 
-  name                        = "SSH"
+  name                        = "ssh-inbound"
   resource_group_name         = var.resource_group_name
   access                      = "Allow"
   direction                   = "Inbound"
@@ -77,7 +77,7 @@ resource "azurerm_network_security_rule" "ssh" {
 resource "azurerm_network_security_rule" "rdp" {
   for_each = toset(var.rdp_inbound_allowed ? ["enabled"] : [])
 
-  name                        = "RDP"
+  name                        = "rdp-inbound"
   resource_group_name         = var.resource_group_name
   access                      = "Allow"
   direction                   = "Inbound"
@@ -94,7 +94,7 @@ resource "azurerm_network_security_rule" "rdp" {
 resource "azurerm_network_security_rule" "winrm" {
   for_each = toset(var.winrm_inbound_allowed ? ["enabled"] : [])
 
-  name                        = "SSH"
+  name                        = "ssh-inbound"
   resource_group_name         = var.resource_group_name
   access                      = "Allow"
   direction                   = "Inbound"
