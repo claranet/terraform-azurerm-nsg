@@ -27,13 +27,22 @@ module "network_security_group" {
 
   resource_group_name = module.rg.resource_group_name
 
+  # To deactivate default deny all rule (not recommended)
+  # deny_all_inbound = false
+
+  https_inbound_allowed = true
+  allowed_https_source  = ["11.12.13.14/32", "10.0.0.0/24"]
+
+  ssh_inbound_allowed = true
+  allowed_ssh_source  = "VirtualNetwork"
+
   # You can set either a prefix for generated name or a custom one for the resource naming
   #custom_network_security_group_names = "my_nsg"
 }
 
 # Single port and prefix sample
-resource "azurerm_network_security_rule" "http" {
-  name = "my-http-rule"
+resource "azurerm_network_security_rule" "mysql" {
+  name = "my-mysql-rule"
 
   resource_group_name         = module.rg.resource_group_name
   network_security_group_name = module.network_security_group.network_security_group_name
@@ -43,7 +52,7 @@ resource "azurerm_network_security_rule" "http" {
   access                     = "Allow"
   protocol                   = "Tcp"
   source_port_range          = "*"
-  destination_port_range     = "80"
+  destination_port_range     = "3306"
   source_address_prefix      = "10.0.0.0/24"
   destination_address_prefix = "*"
 }
@@ -60,24 +69,7 @@ resource "azurerm_network_security_rule" "custom" {
   access                     = "Allow"
   protocol                   = "Tcp"
   source_port_range          = "*"
-  destination_port_ranges    = ["22", "80", "1000-2000"]
+  destination_port_ranges    = ["8080", "1000-2000"]
   source_address_prefixes    = ["10.0.0.0/24", "10.1.0.0/24"]
-  destination_address_prefix = "*"
-}
-
-# Deny all sample. Apply on all NSG
-resource "azurerm_network_security_rule" "deny_all" {
-  name = "DenyAll"
-
-  resource_group_name         = module.rg.resource_group_name
-  network_security_group_name = module.network_security_group.network_security_group_name
-
-  priority                   = 4096
-  direction                  = "Inbound"
-  access                     = "Allow"
-  protocol                   = "Tcp"
-  source_port_range          = "*"
-  destination_port_range     = "*"
-  source_address_prefix      = "*"
   destination_address_prefix = "*"
 }

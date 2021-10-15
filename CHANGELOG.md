@@ -1,5 +1,12 @@
 # Unreleased
 
+Breaking:
+  * AS-582: Deny All inbound rule activated by default
+  * AZ-582: Remove compatibility with Terraform 0.12
+
+Added
+  * AZ-582: Add predefined rules
+
 Changed
   * AZ-572: Revamp examples and improve CI
 
