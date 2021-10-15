@@ -1,4 +1,4 @@
-# Unreleased
+# v4.2.0 - 2021-10-15
 
 Breaking:
   * AS-582: Deny All inbound rule activated by default
