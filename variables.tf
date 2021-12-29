@@ -28,18 +28,6 @@ variable "client_name" {
   type        = string
 }
 
-variable "name_prefix" {
-  description = "Optional prefix for Network Security Group name"
-  type        = string
-  default     = ""
-}
-
-variable "custom_network_security_group_name" {
-  description = "Security Group custom name."
-  type        = string
-  default     = null
-}
-
 variable "extra_tags" {
   description = "Additional tags to associate with your Network Security Group."
   type        = map(string)
