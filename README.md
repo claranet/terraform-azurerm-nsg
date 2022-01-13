@@ -107,6 +107,7 @@ resource "azurerm_network_security_rule" "custom" {
 
 | Name | Version |
 |------|---------|
+| azurecaf | ~> 1.1 |
 | azurerm | >= 1.44 |
 
 ## Modules
@@ -117,6 +118,7 @@ No modules.
 
 | Name | Type |
 |------|------|
+| [azurecaf_name.nsg](https://registry.terraform.io/providers/aztfmod/azurecaf/latest/docs/resources/name) | resource |
 | [azurerm_network_security_group.nsg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_group) | resource |
 | [azurerm_network_security_rule.appgw_health_probe_inbound](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule) | resource |
 | [azurerm_network_security_rule.deny_all_inbound](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule) | resource |
@@ -147,11 +149,13 @@ No modules.
 | load\_balancer\_rules\_enabled | True to configure rules mandatory for hosting a Load Balancer. | `bool` | `false` | no |
 | location | Azure location. | `string` | n/a | yes |
 | location\_short | Short string for Azure location. | `string` | n/a | yes |
-| name\_prefix | Optional prefix for Network Security Group name | `string` | `""` | no |
+| name\_prefix | Optional prefix for the generated name | `string` | `""` | no |
+| name\_suffix | Optional suffix for the generated name | `string` | `""` | no |
 | rdp\_inbound\_allowed | True to allow inbound RDP traffic | `bool` | `false` | no |
 | resource\_group\_name | Resource group name | `string` | n/a | yes |
 | ssh\_inbound\_allowed | True to allow inbound SSH traffic | `bool` | `false` | no |
 | stack | Project stack name | `string` | n/a | yes |
+| use\_caf\_naming | Use the Azure CAF naming provider to generate default resource name. `custom_network_security_group_name` override this if set. Legacy default name is used if this is set to `false`. | `bool` | `true` | no |
 | winrm\_inbound\_allowed | True to allow inbound WinRM traffic | `bool` | `false` | no |
 
 ## Outputs

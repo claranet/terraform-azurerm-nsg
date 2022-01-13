@@ -94,7 +94,7 @@ resource "azurerm_network_security_rule" "rdp_inbound" {
 resource "azurerm_network_security_rule" "winrm_inbound" {
   for_each = toset(var.winrm_inbound_allowed ? ["enabled"] : [])
 
-  name                        = "ssh-inbound"
+  name                        = "winrm-inbound"
   resource_group_name         = var.resource_group_name
   access                      = "Allow"
   direction                   = "Inbound"
