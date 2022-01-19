@@ -1,3 +1,8 @@
+# Unreleased
+
+Added
+  * AZ-615: Add an option to enable or disable default tags
+
 # v5.0.0 - 2022-01-13
 
 Breaking
@@ -29,13 +34,13 @@ Changed
 
 Breaking:
   * AZ-344: Upgrade module to tf0.13. Remove all count instances
-  
+
 Changed:
   * AZ-273: Upgrade CI
-  
+
 # v2.1.0 / v3.0.0 - 2020-07-03
 
-Breaking 
+Breaking
   * AZ-205: Add ability to create multiple NSGs
 
 Changed

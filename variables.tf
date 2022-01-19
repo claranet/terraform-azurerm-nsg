@@ -28,12 +28,6 @@ variable "client_name" {
   type        = string
 }
 
-variable "extra_tags" {
-  description = "Additional tags to associate with your Network Security Group."
-  type        = map(string)
-  default     = {}
-}
-
 variable "deny_all_inbound" {
   description = "True to deny all inbound traffic by default"
   type        = bool
