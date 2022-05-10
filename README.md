@@ -12,8 +12,9 @@ The default module configuration deny all inbound traffic.
 
 | Module version | Terraform version | AzureRM version |
 | -------------- | ----------------- | --------------- |
-| >= 5.x.x       | 0.15.x & 1.0.x    | >= 2.0          |
-| >= 4.x.x       | 0.13.x            | >= 2.0          |
+| >= 6.x.x       | 1.x               | >= 3.0          |
+| >= 5.x.x       | 0.15.x            | >= 2.0          |
+| >= 4.x.x       | 0.13.x / 0.14.x   | >= 2.0          |
 | >= 3.x.x       | 0.12.x            | >= 2.0          |
 | >= 2.x.x       | 0.12.x            | < 2.0           |
 | <  2.x.x       | 0.11.x            | < 2.0           |
@@ -100,7 +101,6 @@ resource "azurerm_network_security_rule" "custom" {
   source_address_prefixes    = ["10.0.0.0/24", "10.1.0.0/24"]
   destination_address_prefix = "*"
 }
-
 ```
 
 ## Providers
