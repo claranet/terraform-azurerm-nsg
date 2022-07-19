@@ -94,6 +94,7 @@ module "network_security_group" {
   allowed_ssh_source  = "VirtualNetwork"
 
   # You can set either a prefix for generated name or a custom one for the resource naming
+<<<<<<< HEAD
   # custom_network_security_group_names = "my_nsg"
 
   # You can set either a prefix for generated name or a custom one for the resource naming
@@ -118,6 +119,28 @@ module "network_security_group" {
   log_analytics_workspace_guid     = module.logs.log_analytics_workspace_guid
   log_analytics_workspace_location = module.azure_region.location
   log_analytics_workspace_id       = module.logs.log_analytics_workspace_id
+=======
+  #custom_network_security_group_names = "my_nsg"
+
+  additional_rules = [
+    {
+      priority               = 300
+      name                   = "mysql_inbound"
+      destination_port_range = "3306"
+      source_address_prefix  = "10.0.0.0/24"
+    },
+    {
+      priority                   = 400
+      name                       = "my_service_outbound"
+      access                     = "Allow"    # defaults to 'Allow'
+      direction                  = "Outbound" # defaults to 'Inbound'
+      protocol                   = "Tcp"      # defaults to 'Tcp'
+      destination_port_ranges    = ["8081", "1000-2000"]
+      source_address_prefixes    = ["10.0.0.0/24", "10.1.0.0/24"]
+      destination_address_prefix = "*"
+    }
+  ]
+>>>>>>> af11600 (Add support for custom rules)
 }
 
 # Single port and prefix sample
