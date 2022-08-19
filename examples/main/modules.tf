@@ -15,6 +15,11 @@ module "rg" {
   stack       = var.stack
 }
 
+data "azurerm_network_watcher" "network_watcher" {
+  name                = "NetworkWatcher_eeastus"
+  resource_group_name = "NetworkWatcherRG"
+}
+
 module "network_security_group" {
   source  = "claranet/nsg/azurerm"
   version = "x.x.x"
@@ -38,6 +43,23 @@ module "network_security_group" {
 
   # You can set either a prefix for generated name or a custom one for the resource naming
   #custom_network_security_group_names = "my_nsg"
+
+  # You can set either a prefix for generated name or a custom one for the resource naming
+  custom_network_watcher_flow_log_name = "my_nw_flow_log"
+
+  flow_log_enabled            = true
+  flow_log_logging_enabled    = true
+  flow_log_storage_account_id = "xxx"
+  network_watcher_name        = data.azurerm_network_watcher.network_watcher
+
+  flow_log_retention_policy_enabled = true # default to true
+  flow_log_retention_policy_days    = 7    # default to 7
+
+  flow_log_traffic_analytics_enabled             = true # default to false
+  log_analytics_workspace_guid                   = "xxx"
+  log_analytics_workspace_location               = "eastus"
+  log_analytics_workspace_id                     = "xxx"
+  flow_log_traffic_analytics_interval_in_minutes = 10 # default to 10
 }
 
 # Single port and prefix sample

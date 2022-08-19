@@ -1,3 +1,8 @@
+# Unreleased
+
+Added
+  * GH-2: Add network watcher flow log
+
 # v5.1.0 - 2022-02-03
 
 Added
