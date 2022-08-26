@@ -148,5 +148,6 @@ variable "load_balancer_rules_enabled" {
 
 variable "additional_rules" {
   description = "Additional network security group rules to add. For arguements please refer to https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule#argument-reference"
+  type        = list(any)
   default     = []
 }
