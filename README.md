@@ -12,8 +12,9 @@ The default module configuration deny all inbound traffic.
 
 | Module version | Terraform version | AzureRM version |
 | -------------- | ----------------- | --------------- |
-| >= 5.x.x       | 0.15.x & 1.0.x    | >= 2.0          |
-| >= 4.x.x       | 0.13.x            | >= 2.0          |
+| >= 6.x.x       | 1.x               | >= 3.0          |
+| >= 5.x.x       | 0.15.x            | >= 2.0          |
+| >= 4.x.x       | 0.13.x / 0.14.x   | >= 2.0          |
 | >= 3.x.x       | 0.12.x            | >= 2.0          |
 | >= 2.x.x       | 0.12.x            | < 2.0           |
 | <  2.x.x       | 0.11.x            | < 2.0           |
@@ -42,6 +43,40 @@ module "rg" {
   stack       = var.stack
 }
 
+module "logs" {
+  source  = "claranet/run-common/azurerm//modules/logs"
+  version = "x.x.x"
+
+  resource_group_name = module.rg.resource_group_name
+
+  client_name    = var.client_name
+  environment    = var.environment
+  location       = var.location
+  location_short = module.azure_region.location_short
+  stack          = var.stack
+
+  # Log analytics
+  log_analytics_workspace_custom_name       = module.naming.log_analytics_workspace.name
+  log_analytics_workspace_retention_in_days = 90
+
+  # Log storage account
+  logs_storage_account_enable_https_traffic_only         = true
+  logs_storage_min_tls_version                           = "TLS1_2"
+  logs_storage_account_enable_advanced_threat_protection = true
+
+  logs_storage_account_enable_archiving                      = true
+  tier_to_cool_after_days_since_modification_greater_than    = 30
+  tier_to_archive_after_days_since_modification_greater_than = 90
+  delete_after_days_since_modification_greater_than          = 2560 # 7 years
+
+  extra_tags = local.extra_tags
+}
+
+data "azurerm_network_watcher" "network_watcher" {
+  name                = "NetworkWatcher_eastus"
+  resource_group_name = "NetworkWatcherRG"
+}
+
 module "network_security_group" {
   source  = "claranet/nsg/azurerm"
   version = "x.x.x"
@@ -64,7 +99,27 @@ module "network_security_group" {
   allowed_ssh_source  = "VirtualNetwork"
 
   # You can set either a prefix for generated name or a custom one for the resource naming
-  #custom_network_security_group_names = "my_nsg"
+  # custom_network_security_group_names = "my_nsg"
+
+  # You can set either a prefix for generated name or a custom one for the resource naming
+  custom_network_watcher_flow_log_name = "my_nw_flow_log"
+
+  flow_log_enabled            = true
+  flow_log_logging_enabled    = true
+
+  network_watcher_name                = data.azurerm_network_watcher.network_watcher.name
+  networK_watcher_resource_group_name = data.azurerm_network_watcher.network_watcher.resource_group_name
+
+  flow_log_retention_policy_enabled = true # default to true
+  flow_log_retention_policy_days    = 7    # default to 7
+
+  flow_log_storage_account_id                    = module.logs.logs_storage_account_id
+  flow_log_traffic_analytics_enabled             = true # default to false
+  flow_log_traffic_analytics_interval_in_minutes = 10   # default to 10
+
+  log_analytics_workspace_guid                   = module.logs.log_analytics_workspace_guid
+  log_analytics_workspace_location               = module.rg.location
+  log_analytics_workspace_id                     = module.logs.log_analytics_workspace_id
 }
 
 # Single port and prefix sample
@@ -100,7 +155,6 @@ resource "azurerm_network_security_rule" "custom" {
   source_address_prefixes    = ["10.0.0.0/24", "10.1.0.0/24"]
   destination_address_prefix = "*"
 }
-
 ```
 
 ## Providers
@@ -119,6 +173,7 @@ No modules.
 | Name | Type |
 |------|------|
 | [azurecaf_name.nsg](https://registry.terraform.io/providers/aztfmod/azurecaf/latest/docs/resources/name) | resource |
+| [azurecaf_name.nwflog](https://registry.terraform.io/providers/aztfmod/azurecaf/latest/docs/resources/name) | resource |
 | [azurerm_network_security_group.nsg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_group) | resource |
 | [azurerm_network_security_rule.appgw_health_probe_inbound](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule) | resource |
 | [azurerm_network_security_rule.deny_all_inbound](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule) | resource |
@@ -128,6 +183,7 @@ No modules.
 | [azurerm_network_security_rule.rdp_inbound](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule) | resource |
 | [azurerm_network_security_rule.ssh_inbound](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule) | resource |
 | [azurerm_network_security_rule.winrm_inbound](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule) | resource |
+| [azurerm_network_watcher_flow_log.nwfl](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_watcher_flow_log) | resource |
 
 ## Inputs
 
@@ -141,17 +197,29 @@ No modules.
 | application\_gateway\_rules\_enabled | True to configure rules mandatory for hosting an Application Gateway. See https://docs.microsoft.com/en-us/azure/application-gateway/configuration-infrastructure#allow-access-to-a-few-source-ips | `bool` | `false` | no |
 | client\_name | Client name/account used in naming | `string` | n/a | yes |
 | custom\_network\_security\_group\_name | Security Group custom name. | `string` | `null` | no |
+| custom\_network\_watcher\_flow\_log\_name | Network watcher flow log name. | `string` | `null` | no |
 | default\_tags\_enabled | Option to enable or disable default tags. | `bool` | `true` | no |
 | deny\_all\_inbound | True to deny all inbound traffic by default | `bool` | `true` | no |
 | environment | Project environment | `string` | n/a | yes |
 | extra\_tags | Additional tags to associate with your Network Security Group. | `map(string)` | `{}` | no |
+| flow\_log\_enabled | Provision network watcher flow logs | `bool` | `false` | no |
+| flow\_log\_logging\_enabled | Enable Network Flow Logging | `bool` | `true` | no |
+| flow\_log\_retention\_policy\_days | The number of days to retain flow log records | `number` | `7` | no |
+| flow\_log\_retention\_policy\_enabled | Boolean flag to enable/disable retention | `bool` | `true` | no |
+| flow\_log\_storage\_account\_id | Network watcher flow log storage account id | `string` | `null` | no |
+| flow\_log\_traffic\_analytics\_enabled | Boolean flag to enable/disable traffic analytics | `bool` | `true` | no |
+| flow\_log\_traffic\_analytics\_interval\_in\_minutes | How frequently service should do flow analytics in minutes. | `number` | `10` | no |
 | http\_inbound\_allowed | True to allow inbound HTTP traffic | `bool` | `false` | no |
 | https\_inbound\_allowed | True to allow inbound HTTPS traffic | `bool` | `false` | no |
 | load\_balancer\_rules\_enabled | True to configure rules mandatory for hosting a Load Balancer. | `bool` | `false` | no |
 | location | Azure location. | `string` | n/a | yes |
 | location\_short | Short string for Azure location. | `string` | n/a | yes |
+| log\_analytics\_workspace\_guid | The resource GUID of the attached workspace. | `string` | `null` | no |
+| log\_analytics\_workspace\_id | The resource ID of the attached workspace. | `string` | `null` | no |
+| log\_analytics\_workspace\_location | The location of the attached workspace. | `string` | `null` | no |
 | name\_prefix | Optional prefix for the generated name | `string` | `""` | no |
 | name\_suffix | Optional suffix for the generated name | `string` | `""` | no |
+| network\_watcher\_name | Network watcher name | `string` | `null` | no |
 | rdp\_inbound\_allowed | True to allow inbound RDP traffic | `bool` | `false` | no |
 | resource\_group\_name | Resource group name | `string` | n/a | yes |
 | ssh\_inbound\_allowed | True to allow inbound SSH traffic | `bool` | `false` | no |
@@ -163,6 +231,7 @@ No modules.
 
 | Name | Description |
 |------|-------------|
+| netowrk\_watcher\_flow\_log\_id | Netowrk watcher flow log id |
 | network\_security\_group\_id | Network security group id |
 | network\_security\_group\_name | Network security group name |
 <!-- END_TF_DOCS -->
