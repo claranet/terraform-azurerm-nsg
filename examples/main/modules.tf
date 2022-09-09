@@ -15,6 +15,40 @@ module "rg" {
   stack       = var.stack
 }
 
+module "logs" {
+  source  = "claranet/run-common/azurerm//modules/logs"
+  version = "x.x.x"
+
+  resource_group_name = module.rg.resource_group_name
+
+  client_name    = var.client_name
+  environment    = var.environment
+  location       = var.location
+  location_short = module.azure_region.location_short
+  stack          = var.stack
+
+  # Log analytics
+  log_analytics_workspace_custom_name       = module.naming.log_analytics_workspace.name
+  log_analytics_workspace_retention_in_days = 90
+
+  # Log storage account
+  logs_storage_account_enable_https_traffic_only         = true
+  logs_storage_min_tls_version                           = "TLS1_2"
+  logs_storage_account_enable_advanced_threat_protection = true
+
+  logs_storage_account_enable_archiving                      = true
+  tier_to_cool_after_days_since_modification_greater_than    = 30
+  tier_to_archive_after_days_since_modification_greater_than = 90
+  delete_after_days_since_modification_greater_than          = 2560 # 7 years
+
+  extra_tags = local.extra_tags
+}
+
+data "azurerm_network_watcher" "network_watcher" {
+  name                = "NetworkWatcher_eastus"
+  resource_group_name = "NetworkWatcherRG"
+}
+
 module "network_security_group" {
   source  = "claranet/nsg/azurerm"
   version = "x.x.x"
@@ -37,7 +71,27 @@ module "network_security_group" {
   allowed_ssh_source  = "VirtualNetwork"
 
   # You can set either a prefix for generated name or a custom one for the resource naming
-  #custom_network_security_group_names = "my_nsg"
+  # custom_network_security_group_names = "my_nsg"
+
+  # You can set either a prefix for generated name or a custom one for the resource naming
+  custom_network_watcher_flow_log_name = "my_nw_flow_log"
+
+  flow_log_enabled         = true
+  flow_log_logging_enabled = true
+
+  network_watcher_name                = data.azurerm_network_watcher.network_watcher.name
+  networK_watcher_resource_group_name = data.azurerm_network_watcher.network_watcher.resource_group_name
+
+  flow_log_retention_policy_enabled = true # default to true
+  flow_log_retention_policy_days    = 7    # default to 7
+
+  flow_log_storage_account_id                    = module.logs.logs_storage_account_id
+  flow_log_traffic_analytics_enabled             = true # default to false
+  flow_log_traffic_analytics_interval_in_minutes = 10   # default to 10
+
+  log_analytics_workspace_guid     = module.logs.log_analytics_workspace_guid
+  log_analytics_workspace_location = module.rg.location
+  log_analytics_workspace_id       = module.logs.log_analytics_workspace_id
 }
 
 # Single port and prefix sample
