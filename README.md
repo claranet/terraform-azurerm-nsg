@@ -73,7 +73,7 @@ module "logs" {
 }
 
 data "azurerm_network_watcher" "network_watcher" {
-  name                = "NetworkWatcher_eastus"
+  name                = "NetworkWatcher_${module.azure_region.location_cli}"
   resource_group_name = "NetworkWatcherRG"
 }
 
@@ -102,7 +102,7 @@ module "network_security_group" {
   # custom_network_security_group_names = "my_nsg"
 
   # You can set either a prefix for generated name or a custom one for the resource naming
-  custom_network_watcher_flow_log_name = "my_nw_flow_log"
+  # custom_network_watcher_flow_log_name = "my_nw_flow_log"
 
   flow_log_enabled         = true
   flow_log_logging_enabled = true
