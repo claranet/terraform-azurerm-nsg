@@ -162,7 +162,7 @@ resource "azurerm_network_security_rule" "custom" {
 | Name | Version |
 |------|---------|
 | azurecaf | ~> 1.1 |
-| azurerm | >= 1.44 |
+| azurerm | >= 2.96 |
 
 ## Modules
 
