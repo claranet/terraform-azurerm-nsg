@@ -69,3 +69,9 @@ variable "flow_log_traffic_analytics_interval_in_minutes" {
   type        = number
   default     = 10
 }
+
+variable "flow_log_location" {
+  description = "The location where the Network Watcher Flow Log resides. Changing this forces a new resource to be created. Defaults to the `location` of the Network Watcher."
+  type        = string
+  default     = null
+}
