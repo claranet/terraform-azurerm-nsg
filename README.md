@@ -125,7 +125,7 @@ module "network_security_group" {
   network_watcher_resource_group_name = data.azurerm_network_watcher.network_watcher.resource_group_name
 
   flow_log_retention_policy_enabled = true # default to true
-  flow_log_retention_policy_days    = 7    # default to 7
+  flow_log_retention_policy_days    = 91    # default to 91
 
   # Make sure to use a storage account with no existing lifecycle management rules
   # as this will adds a new rule and overwrites the existing one.
