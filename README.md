@@ -7,6 +7,13 @@ with possible predefined rules.
 
 The default module configuration deny all inbound traffic.
 
+## When Flow Logs are enabled
+
+Make sure to use a Storage Account with no existing lifecycle management rules
+as this will add a new rule and overwrite the existing ones.
+
+Fore more details, see https://github.com/hashicorp/terraform-provider-azurerm/issues/6935.
+
 <!-- BEGIN_TF_DOCS -->
 ## Global versioning rule for Claranet Azure modules
 
@@ -73,6 +80,19 @@ module "logs" {
   }
 }
 
+module "storage_account" {
+  source  = "claranet/storage-account/azurerm"
+  version = "x.x.x"
+
+  location       = module.azure_region.location
+  location_short = module.azure_region.location_short
+  client_name    = var.client_name
+  environment    = var.environment
+  stack          = var.stack
+
+  resource_group_name = module.rg.resource_group_name
+}
+
 data "azurerm_network_watcher" "network_watcher" {
   name                = "NetworkWatcher_${module.azure_region.location_cli}"
   resource_group_name = "NetworkWatcherRG"
@@ -112,9 +132,12 @@ module "network_security_group" {
   network_watcher_resource_group_name = data.azurerm_network_watcher.network_watcher.resource_group_name
 
   flow_log_retention_policy_enabled = true # default to true
-  flow_log_retention_policy_days    = 7    # default to 7
+  flow_log_retention_policy_days    = 91   # default to 91
 
-  flow_log_storage_account_id                    = module.logs.logs_storage_account_id
+  # Make sure to use a storage account with no existing lifecycle management rules
+  # as this will adds a new rule and overwrites the existing one.
+  # Fore more details, see https://github.com/hashicorp/terraform-provider-azurerm/issues/6935
+  flow_log_storage_account_id                    = module.storage_account.storage_account_id
   flow_log_traffic_analytics_enabled             = true # default to false
   flow_log_traffic_analytics_interval_in_minutes = 10   # default to 10
 
@@ -185,6 +208,7 @@ No modules.
 | [azurerm_network_security_rule.ssh_inbound](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule) | resource |
 | [azurerm_network_security_rule.winrm_inbound](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule) | resource |
 | [azurerm_network_watcher_flow_log.nwfl](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_watcher_flow_log) | resource |
+| [azurerm_network_watcher.nw](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/network_watcher) | data source |
 
 ## Inputs
 
@@ -204,8 +228,9 @@ No modules.
 | environment | Project environment | `string` | n/a | yes |
 | extra\_tags | Additional tags to associate with your Network Security Group. | `map(string)` | `{}` | no |
 | flow\_log\_enabled | Provision network watcher flow logs | `bool` | `false` | no |
+| flow\_log\_location | The location where the Network Watcher Flow Log resides. Changing this forces a new resource to be created. Defaults to the `location` of the Network Watcher. | `string` | `null` | no |
 | flow\_log\_logging\_enabled | Enable Network Flow Logging | `bool` | `true` | no |
-| flow\_log\_retention\_policy\_days | The number of days to retain flow log records | `number` | `7` | no |
+| flow\_log\_retention\_policy\_days | The number of days to retain flow log records | `number` | `91` | no |
 | flow\_log\_retention\_policy\_enabled | Boolean flag to enable/disable retention | `bool` | `true` | no |
 | flow\_log\_storage\_account\_id | Network watcher flow log storage account id | `string` | `null` | no |
 | flow\_log\_traffic\_analytics\_enabled | Boolean flag to enable/disable traffic analytics | `bool` | `true` | no |
