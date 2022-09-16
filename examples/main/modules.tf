@@ -56,6 +56,15 @@ module "storage_account" {
   stack          = var.stack
 
   resource_group_name = module.rg.resource_group_name
+
+  logs_destinations_ids = [
+    module.logs.logs_storage_account_id,
+    module.logs.log_analytics_workspace_id
+  ]
+
+  extra_tags = {
+    foo = "bar"
+  }
 }
 
 data "azurerm_network_watcher" "network_watcher" {
