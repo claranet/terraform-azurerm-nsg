@@ -5,9 +5,9 @@ resource "azurerm_network_security_rule" "nsg_rule" {
   resource_group_name         = var.resource_group_name
 
   priority  = each.value.priority
-  direction = each.value.direction
-  access    = each.value.access
-  protocol  = each.value.protocol
+  direction = coalesce(each.value.direction, "Inbound")
+  access    = coalesce(each.value.access, "Allow")
+  protocol  = coalesce(each.value.protocol, "Tcp")
 
   source_port_range  = each.value.source_port_range
   source_port_ranges = each.value.source_port_ranges

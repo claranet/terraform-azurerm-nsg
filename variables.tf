@@ -151,21 +151,21 @@ variable "additional_rules" {
   type = list(object({
     priority  = number
     name      = string
-    direction = optional(string, "Inbound")
-    access    = optional(string, "Allow")
-    protocol  = optional(string, "Tcp")
+    direction = optional(string)
+    access    = optional(string)
+    protocol  = optional(string)
 
-    source_port_range  = optional(string, null)
-    source_port_ranges = optional(list(string), null)
+    source_port_range  = optional(string)
+    source_port_ranges = optional(list(string))
 
-    destination_port_range  = optional(string, null)
-    destination_port_ranges = optional(list(string), null)
+    destination_port_range  = optional(string)
+    destination_port_ranges = optional(list(string))
 
-    source_address_prefix   = optional(string, null)
-    source_address_prefixes = optional(list(string), null)
+    source_address_prefix   = optional(string)
+    source_address_prefixes = optional(list(string))
 
-    destination_address_prefix   = optional(string, null)
-    destination_address_prefixes = optional(list(string), null)
+    destination_address_prefix   = optional(string)
+    destination_address_prefixes = optional(list(string))
   }))
   default = []
 }
