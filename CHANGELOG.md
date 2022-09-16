@@ -1,7 +1,10 @@
-# Unreleased
+# v6.0.0 - 2022-09-16
+
+Breaking
+  * AZ-844: Require Terraform `v1.1+` and AzureRM provider `v3.0+`
 
 Added
-  * GH-1: Add support for custom rules
+  * [GH-1](https://github.com/claranet/terraform-azurerm-nsg/pull/1): Add support for custom rules
 
 # v5.2.0 - 2022-09-16
 
