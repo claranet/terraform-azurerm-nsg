@@ -1,4 +1,4 @@
-# Unreleased
+# v5.2.0 - 2022-09-16
 
 Added
   * [GH-2](https://github.com/claranet/terraform-azurerm-nsg/pull/2): Add network watcher flow log
