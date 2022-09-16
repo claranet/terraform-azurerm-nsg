@@ -118,6 +118,29 @@ module "network_security_group" {
   log_analytics_workspace_guid     = module.logs.log_analytics_workspace_guid
   log_analytics_workspace_location = module.azure_region.location
   log_analytics_workspace_id       = module.logs.log_analytics_workspace_id
+
+  additional_rules = [
+    {
+      priority                   = 300
+      name                       = "mysql_inbound"
+      source_port_range          = "*"
+      destination_port_range     = "3306"
+      source_address_prefix      = "10.0.0.0/24"
+      destination_address_prefix = "*"
+
+    },
+    {
+      priority                   = 400
+      name                       = "my_service_outbound"
+      access                     = "Allow"    # defaults to 'Allow'
+      direction                  = "Outbound" # defaults to 'Inbound'
+      protocol                   = "Tcp"      # defaults to 'Tcp'
+      source_port_range          = "*"
+      destination_port_ranges    = ["8081", "1000-2000"]
+      source_address_prefixes    = ["10.0.0.0/24", "10.1.0.0/24"]
+      destination_address_prefix = "*"
+    }
+  ]
 }
 
 # Single port and prefix sample

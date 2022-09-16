@@ -145,3 +145,27 @@ variable "load_balancer_rules_enabled" {
   type        = bool
   default     = false
 }
+
+variable "additional_rules" {
+  description = "Additional network security group rules to add. For arguements please refer to https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule#argument-reference"
+  type = list(object({
+    priority  = number
+    name      = string
+    direction = optional(string)
+    access    = optional(string)
+    protocol  = optional(string)
+
+    source_port_range  = optional(string)
+    source_port_ranges = optional(list(string))
+
+    destination_port_range  = optional(string)
+    destination_port_ranges = optional(list(string))
+
+    source_address_prefix   = optional(string)
+    source_address_prefixes = optional(list(string))
+
+    destination_address_prefix   = optional(string)
+    destination_address_prefixes = optional(list(string))
+  }))
+  default = []
+}
