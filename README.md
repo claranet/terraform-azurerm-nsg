@@ -51,12 +51,11 @@ module "logs" {
 
   client_name    = var.client_name
   environment    = var.environment
-  location       = var.location
+  location       = module.azure_region.location
   location_short = module.azure_region.location_short
   stack          = var.stack
 
   # Log analytics
-  log_analytics_workspace_custom_name       = module.naming.log_analytics_workspace.name
   log_analytics_workspace_retention_in_days = 90
 
   # Log storage account
@@ -69,11 +68,13 @@ module "logs" {
   tier_to_archive_after_days_since_modification_greater_than = 90
   delete_after_days_since_modification_greater_than          = 2560 # 7 years
 
-  extra_tags = local.extra_tags
+  extra_tags = {
+    foo = "bar"
+  }
 }
 
 data "azurerm_network_watcher" "network_watcher" {
-  name                = "NetworkWatcher_eastus"
+  name                = "NetworkWatcher_${module.azure_region.location_cli}"
   resource_group_name = "NetworkWatcherRG"
 }
 
@@ -102,13 +103,13 @@ module "network_security_group" {
   # custom_network_security_group_names = "my_nsg"
 
   # You can set either a prefix for generated name or a custom one for the resource naming
-  custom_network_watcher_flow_log_name = "my_nw_flow_log"
+  # custom_network_watcher_flow_log_name = "my_nw_flow_log"
 
-  flow_log_enabled            = true
-  flow_log_logging_enabled    = true
+  flow_log_enabled         = true
+  flow_log_logging_enabled = true
 
   network_watcher_name                = data.azurerm_network_watcher.network_watcher.name
-  networK_watcher_resource_group_name = data.azurerm_network_watcher.network_watcher.resource_group_name
+  network_watcher_resource_group_name = data.azurerm_network_watcher.network_watcher.resource_group_name
 
   flow_log_retention_policy_enabled = true # default to true
   flow_log_retention_policy_days    = 7    # default to 7
@@ -117,9 +118,9 @@ module "network_security_group" {
   flow_log_traffic_analytics_enabled             = true # default to false
   flow_log_traffic_analytics_interval_in_minutes = 10   # default to 10
 
-  log_analytics_workspace_guid                   = module.logs.log_analytics_workspace_guid
-  log_analytics_workspace_location               = module.rg.location
-  log_analytics_workspace_id                     = module.logs.log_analytics_workspace_id
+  log_analytics_workspace_guid     = module.logs.log_analytics_workspace_guid
+  log_analytics_workspace_location = module.azure_region.location
+  log_analytics_workspace_id       = module.logs.log_analytics_workspace_id
 }
 
 # Single port and prefix sample
@@ -162,7 +163,7 @@ resource "azurerm_network_security_rule" "custom" {
 | Name | Version |
 |------|---------|
 | azurecaf | ~> 1.1 |
-| azurerm | >= 1.44 |
+| azurerm | >= 2.96 |
 
 ## Modules
 
@@ -219,7 +220,8 @@ No modules.
 | log\_analytics\_workspace\_location | The location of the attached workspace. | `string` | `null` | no |
 | name\_prefix | Optional prefix for the generated name | `string` | `""` | no |
 | name\_suffix | Optional suffix for the generated name | `string` | `""` | no |
-| network\_watcher\_name | Network watcher name | `string` | `null` | no |
+| network\_watcher\_name | The name of the Network Watcher. Changing this forces a new resource to be created. | `string` | `null` | no |
+| network\_watcher\_resource\_group\_name | The name of the resource group in which the Network Watcher was deployed. Changing this forces a new resource to be created. | `string` | `null` | no |
 | rdp\_inbound\_allowed | True to allow inbound RDP traffic | `bool` | `false` | no |
 | resource\_group\_name | Resource group name | `string` | n/a | yes |
 | ssh\_inbound\_allowed | True to allow inbound SSH traffic | `bool` | `false` | no |

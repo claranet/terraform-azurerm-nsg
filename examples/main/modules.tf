@@ -23,12 +23,11 @@ module "logs" {
 
   client_name    = var.client_name
   environment    = var.environment
-  location       = var.location
+  location       = module.azure_region.location
   location_short = module.azure_region.location_short
   stack          = var.stack
 
   # Log analytics
-  log_analytics_workspace_custom_name       = module.naming.log_analytics_workspace.name
   log_analytics_workspace_retention_in_days = 90
 
   # Log storage account
@@ -41,11 +40,13 @@ module "logs" {
   tier_to_archive_after_days_since_modification_greater_than = 90
   delete_after_days_since_modification_greater_than          = 2560 # 7 years
 
-  extra_tags = local.extra_tags
+  extra_tags = {
+    foo = "bar"
+  }
 }
 
 data "azurerm_network_watcher" "network_watcher" {
-  name                = "NetworkWatcher_eastus"
+  name                = "NetworkWatcher_${module.azure_region.location_cli}"
   resource_group_name = "NetworkWatcherRG"
 }
 
@@ -74,13 +75,13 @@ module "network_security_group" {
   # custom_network_security_group_names = "my_nsg"
 
   # You can set either a prefix for generated name or a custom one for the resource naming
-  custom_network_watcher_flow_log_name = "my_nw_flow_log"
+  # custom_network_watcher_flow_log_name = "my_nw_flow_log"
 
   flow_log_enabled         = true
   flow_log_logging_enabled = true
 
   network_watcher_name                = data.azurerm_network_watcher.network_watcher.name
-  networK_watcher_resource_group_name = data.azurerm_network_watcher.network_watcher.resource_group_name
+  network_watcher_resource_group_name = data.azurerm_network_watcher.network_watcher.resource_group_name
 
   flow_log_retention_policy_enabled = true # default to true
   flow_log_retention_policy_days    = 7    # default to 7
@@ -90,7 +91,7 @@ module "network_security_group" {
   flow_log_traffic_analytics_interval_in_minutes = 10   # default to 10
 
   log_analytics_workspace_guid     = module.logs.log_analytics_workspace_guid
-  log_analytics_workspace_location = module.rg.location
+  log_analytics_workspace_location = module.azure_region.location
   log_analytics_workspace_id       = module.logs.log_analytics_workspace_id
 }
 

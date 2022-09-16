@@ -1,7 +1,10 @@
 # Unreleased
 
 Added
-  * GH-2: Add network watcher flow log
+  * [GH-2](https://github.com/claranet/terraform-azurerm-nsg/pull/2): Add network watcher flow log
+
+Changed
+  * [GH-2](https://github.com/claranet/terraform-azurerm-nsg/pull/2): Bump minimal AzureRM provider to `v2.96`
 
 # v5.1.0 - 2022-02-03
 
