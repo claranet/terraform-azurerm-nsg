@@ -1,3 +1,8 @@
+# unreleased
+
+Fixed
+  * [GH-3](https://github.com/claranet/terraform-azurerm-nsg/pull/3): Use network watcher data source only if flow logs are enabled
+
 # v6.0.0 - 2022-09-16
 
 Breaking
