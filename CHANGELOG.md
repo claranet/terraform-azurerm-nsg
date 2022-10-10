@@ -1,3 +1,8 @@
+# Unreleased
+
+Added
+  * [GH-4](https://github.com/claranet/terraform-azurerm-nsg/pull/4): Set default values for nsg `additional_rules`
+
 # v7.0.0 - 2022-09-30
 
 Breaking
