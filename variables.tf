@@ -151,9 +151,9 @@ variable "additional_rules" {
   type = list(object({
     priority  = number
     name      = string
-    direction = optional(string)
-    access    = optional(string)
-    protocol  = optional(string)
+    direction = optional(string, "Inbound")
+    access    = optional(string, "Allow")
+    protocol  = optional(string, "Tcp")
 
     source_port_range  = optional(string)
     source_port_ranges = optional(list(string))
