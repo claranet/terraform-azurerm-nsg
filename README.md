@@ -262,13 +262,13 @@ No modules.
 | deny\_all\_inbound | True to deny all inbound traffic by default | `bool` | `true` | no |
 | environment | Project environment | `string` | n/a | yes |
 | extra\_tags | Additional tags to associate with your Network Security Group. | `map(string)` | `{}` | no |
-| flow\_log\_enabled | Provision network watcher flow logs | `bool` | `false` | no |
+| flow\_log\_enabled | Provision network watcher flow logs. | `bool` | `false` | no |
 | flow\_log\_location | The location where the Network Watcher Flow Log resides. Changing this forces a new resource to be created. Defaults to the `location` of the Network Watcher. | `string` | `null` | no |
-| flow\_log\_logging\_enabled | Enable Network Flow Logging | `bool` | `true` | no |
-| flow\_log\_retention\_policy\_days | The number of days to retain flow log records | `number` | `91` | no |
-| flow\_log\_retention\_policy\_enabled | Boolean flag to enable/disable retention | `bool` | `true` | no |
-| flow\_log\_storage\_account\_id | Network watcher flow log storage account id | `string` | `null` | no |
-| flow\_log\_traffic\_analytics\_enabled | Boolean flag to enable/disable traffic analytics | `bool` | `true` | no |
+| flow\_log\_logging\_enabled | Enable Network Flow Logging. | `bool` | `true` | no |
+| flow\_log\_retention\_policy\_days | The number of days to retain flow log records. | `number` | `31` | no |
+| flow\_log\_retention\_policy\_enabled | Boolean flag to enable/disable retention. | `bool` | `true` | no |
+| flow\_log\_storage\_account\_id | Network watcher flow log storage account ID. | `string` | `null` | no |
+| flow\_log\_traffic\_analytics\_enabled | Boolean flag to enable/disable traffic analytics. | `bool` | `true` | no |
 | flow\_log\_traffic\_analytics\_interval\_in\_minutes | How frequently service should do flow analytics in minutes. | `number` | `10` | no |
 | http\_inbound\_allowed | True to allow inbound HTTP traffic | `bool` | `false` | no |
 | https\_inbound\_allowed | True to allow inbound HTTPS traffic | `bool` | `false` | no |
@@ -293,9 +293,9 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| netowrk\_watcher\_flow\_log\_id | Netowrk watcher flow log id |
-| network\_security\_group\_id | Network security group id |
+| network\_security\_group\_id | Network security group ID |
 | network\_security\_group\_name | Network security group name |
+| network\_watcher\_flow\_log\_id | Network watcher flow log ID |
 <!-- END_TF_DOCS -->
 ## Related documentation
 

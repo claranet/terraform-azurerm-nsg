@@ -1,3 +1,8 @@
+# Unreleased
+
+Changed
+  * [GH-5](https://github.com/claranet/terraform-azurerm-nsg/pull/5): Fix outputs and variable descriptions
+
 # v7.0.1 - 2022-10-10
 
 Added
