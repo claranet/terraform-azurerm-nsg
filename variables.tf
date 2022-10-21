@@ -169,3 +169,43 @@ variable "additional_rules" {
   }))
   default = []
 }
+
+variable "nfs_inbound_allowed" {
+  description = "True to allow inbound NFSv4 traffic"
+  type        = bool
+  default     = false
+}
+
+variable "allowed_nfs_source" {
+  description = "Allowed source for inbound NFSv4 traffic. Can be a Service Tag, \"*\" or a CIDR list."
+  type        = any
+  default     = []
+  validation {
+    condition = (
+      var.allowed_nfs_source != null &&
+      var.allowed_nfs_source != "" &&
+      (can(tolist(var.allowed_nfs_source)) || can(tostring(var.allowed_nfs_source)))
+    )
+    error_message = "Variable must be a Service Tag, \"*\" or a list of CIDR."
+  }
+}
+
+variable "cifs_inbound_allowed" {
+  description = "True to allow inbound CIFS traffic"
+  type        = bool
+  default     = false
+}
+
+variable "allowed_cifs_source" {
+  description = "Allowed source for inbound CIFS traffic. Can be a Service Tag, \"*\" or a CIDR list."
+  type        = any
+  default     = []
+  validation {
+    condition = (
+      var.allowed_cifs_source != null &&
+      var.allowed_cifs_source != "" &&
+      (can(tolist(var.allowed_cifs_source)) || can(tostring(var.allowed_cifs_source)))
+    )
+    error_message = "Variable must be a Service Tag, \"*\" or a list of CIDR."
+  }
+}

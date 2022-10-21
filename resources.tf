@@ -139,3 +139,37 @@ resource "azurerm_network_security_rule" "lb_health_probe_inbound" {
   source_address_prefix       = "AzureLoadBalancer"
   destination_address_prefix  = "VirtualNetwork"
 }
+
+resource "azurerm_network_security_rule" "nfs_inbound" {
+  for_each = toset(var.nfs_inbound_allowed ? ["enabled"] : [])
+
+  name                        = "nfs-inbound"
+  resource_group_name         = var.resource_group_name
+  access                      = "Allow"
+  direction                   = "Inbound"
+  network_security_group_name = azurerm_network_security_group.nsg.name
+  priority                    = 4007
+  protocol                    = "*"
+  source_port_range           = "*"
+  destination_port_range      = "2049"
+  source_address_prefix       = try(tostring(var.allowed_nfs_source), null)
+  source_address_prefixes     = try(tolist(var.allowed_nfs_source), null)
+  destination_address_prefix  = "VirtualNetwork"
+}
+
+resource "azurerm_network_security_rule" "cifs_inbound" {
+  for_each = toset(var.cifs_inbound_allowed ? ["enabled"] : [])
+
+  name                        = "cifs-inbound"
+  resource_group_name         = var.resource_group_name
+  access                      = "Allow"
+  direction                   = "Inbound"
+  network_security_group_name = azurerm_network_security_group.nsg.name
+  priority                    = 4008
+  protocol                    = "*"
+  source_port_range           = "*"
+  destination_port_ranges     = ["137", "138", "139", "445"]
+  source_address_prefix       = try(tostring(var.allowed_cifs_source), null)
+  source_address_prefixes     = try(tolist(var.allowed_cifs_source), null)
+  destination_address_prefix  = "VirtualNetwork"
+}
