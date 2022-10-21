@@ -1,3 +1,8 @@
+# Unreleased
+
+Added
+   * AZ-869: Add CIFS & NFS predefined rules
+
 # v7.1.0 - 2022-10-17
 
 Changed
