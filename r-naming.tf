@@ -1,4 +1,4 @@
-resource "azurecaf_name" "nsg" {
+data "azurecaf_name" "nsg" {
   name          = var.stack
   resource_type = "azurerm_network_security_group"
   prefixes      = var.name_prefix == "" ? null : [local.name_prefix]
@@ -8,7 +8,7 @@ resource "azurecaf_name" "nsg" {
   separator     = "-"
 }
 
-resource "azurecaf_name" "nwflog" {
+data "azurecaf_name" "nwflog" {
   name          = var.stack
   resource_type = "azurerm_resource_group"
   prefixes      = compact([local.name_prefix, var.use_caf_naming ? "nwflog" : ""])
