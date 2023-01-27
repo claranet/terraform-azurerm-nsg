@@ -1,4 +1,4 @@
-# Unreleased
+# v7.3.1 - 2023-01-27
 
 Added
   * AZ-983: Add resource group name output
