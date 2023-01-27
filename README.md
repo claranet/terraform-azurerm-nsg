@@ -301,6 +301,7 @@ No modules.
 |------|-------------|
 | network\_security\_group\_id | Network security group ID |
 | network\_security\_group\_name | Network security group name |
+| network\_security\_group\_rg\_name | Network security group resource group name |
 | network\_watcher\_flow\_log\_id | Network watcher flow log ID |
 <!-- END_TF_DOCS -->
 ## Related documentation

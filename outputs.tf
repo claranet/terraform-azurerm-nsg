@@ -12,3 +12,8 @@ output "network_watcher_flow_log_id" {
   description = "Network watcher flow log ID"
   value       = var.flow_log_enabled ? azurerm_network_watcher_flow_log.nwfl[0].id : null
 }
+
+output "network_security_group_rg_name" {
+  description = "Network security group resource group name"
+  value       = var.resource_group_name
+}
