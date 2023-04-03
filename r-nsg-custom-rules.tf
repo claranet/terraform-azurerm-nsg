@@ -1,3 +1,4 @@
+#tfsec:ignore:azure-network-no-public-egress
 resource "azurerm_network_security_rule" "nsg_rule" {
   for_each                    = { for index, v in var.additional_rules : v.name => v }
   name                        = each.value.name
