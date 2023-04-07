@@ -59,7 +59,7 @@ module "rg" {
 }
 
 module "logs" {
-  source  = "claranet/run-common/azurerm//modules/logs"
+  source  = "claranet/run/azurerm//modules/logs"
   version = "x.x.x"
 
   resource_group_name = module.rg.resource_group_name
@@ -115,6 +115,7 @@ data "azurerm_network_watcher" "network_watcher" {
   resource_group_name = "NetworkWatcherRG"
 }
 
+#tfsec:ignore:azure-network-no-public-egress
 module "network_security_group" {
   source  = "claranet/nsg/azurerm"
   version = "x.x.x"

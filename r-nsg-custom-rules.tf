@@ -1,3 +1,4 @@
+#tfsec:ignore:azure-network-no-public-egress - because our variable definition set this to optional (null) by default, which is "0.0.0.0/0" in the AzureRM provider
 resource "azurerm_network_security_rule" "nsg_rule" {
   for_each                    = { for index, v in var.additional_rules : v.name => v }
   name                        = each.value.name
