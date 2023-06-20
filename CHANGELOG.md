@@ -1,3 +1,8 @@
+# Unreleased
+
+Breaking
+  * AZ-1106: Change WinRM port to the secure one
+
 # v7.3.1 - 2023-01-27
 
 Added
