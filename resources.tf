@@ -102,7 +102,7 @@ resource "azurerm_network_security_rule" "winrm_inbound" {
   priority                    = 4004
   protocol                    = "Tcp"
   source_port_range           = "*"
-  destination_port_range      = "5985"
+  destination_port_range      = "5986"
   source_address_prefix       = try(tostring(var.allowed_winrm_source), null)
   source_address_prefixes     = try(tolist(var.allowed_winrm_source), null)
   destination_address_prefix  = "VirtualNetwork"

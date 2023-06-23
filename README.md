@@ -301,7 +301,7 @@ No modules.
 | ssh\_inbound\_allowed | True to allow inbound SSH traffic | `bool` | `false` | no |
 | stack | Project stack name | `string` | n/a | yes |
 | use\_caf\_naming | Use the Azure CAF naming provider to generate default resource name. `custom_network_security_group_name` override this if set. Legacy default name is used if this is set to `false`. | `bool` | `true` | no |
-| winrm\_inbound\_allowed | True to allow inbound WinRM traffic | `bool` | `false` | no |
+| winrm\_inbound\_allowed | True to allow inbound secure WinRM traffic | `bool` | `false` | no |
 
 ## Outputs
 

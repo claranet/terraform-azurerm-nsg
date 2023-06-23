@@ -115,7 +115,7 @@ variable "allowed_rdp_source" {
 }
 
 variable "winrm_inbound_allowed" {
-  description = "True to allow inbound WinRM traffic"
+  description = "True to allow inbound secure WinRM traffic"
   type        = bool
   default     = false
 }
