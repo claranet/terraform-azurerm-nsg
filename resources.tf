@@ -122,6 +122,13 @@ resource "azurerm_network_security_rule" "appgw_health_probe_inbound" {
   destination_port_ranges     = ["65200-65535"]
   source_address_prefix       = "GatewayManager"
   destination_address_prefix  = "*"
+
+  lifecycle {
+    precondition {
+      condition     = !var.deny_all_inbound
+      error_message = "You can't use deny_all_inbound with application_gateway_rules_enabled."
+    }
+  }
 }
 
 resource "azurerm_network_security_rule" "lb_health_probe_inbound" {
@@ -172,17 +179,4 @@ resource "azurerm_network_security_rule" "cifs_inbound" {
   source_address_prefix       = try(tostring(var.allowed_cifs_source), null)
   source_address_prefixes     = try(tolist(var.allowed_cifs_source), null)
   destination_address_prefix  = "VirtualNetwork"
-}
-
-resource "null_resource" "application_gateway_rules_validation" {
-  triggers = {
-    deny_all_inbound                  = var.deny_all_inbound
-    application_gateway_rules_enbaled = var.application_gateway_rules_enabled
-  }
-  lifecycle {
-    precondition {
-      condition     = !alltrue([var.deny_all_inbound, var.application_gateway_rules_enabled])
-      error_message = "You can't use deny_all_inbound with application_gateway_rules_enabled."
-    }
-  }
 }
