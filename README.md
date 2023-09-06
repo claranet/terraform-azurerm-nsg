@@ -228,6 +228,7 @@ resource "azurerm_network_security_rule" "custom" {
 |------|---------|
 | azurecaf | ~> 1.2, >= 1.2.22 |
 | azurerm | ~> 3.0 |
+| null | ~> 3.2.1 |
 
 ## Modules
 
@@ -250,6 +251,7 @@ No modules.
 | [azurerm_network_security_rule.ssh_inbound](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule) | resource |
 | [azurerm_network_security_rule.winrm_inbound](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule) | resource |
 | [azurerm_network_watcher_flow_log.nwfl](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_watcher_flow_log) | resource |
+| [null_resource.application_gateway_rules_validation](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [azurecaf_name.nsg](https://registry.terraform.io/providers/aztfmod/azurecaf/latest/docs/data-sources/name) | data source |
 | [azurecaf_name.nwflog](https://registry.terraform.io/providers/aztfmod/azurecaf/latest/docs/data-sources/name) | data source |
 | [azurerm_network_watcher.nw](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/network_watcher) | data source |
