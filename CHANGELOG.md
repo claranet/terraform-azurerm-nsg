@@ -1,4 +1,4 @@
-# Unreleased
+# v7.5.0 - 2023-09-08
 
 Added
   * AZ-1159: Do not allow `deny_all_inbound` when `application_gateway_rules_enabled` is used
