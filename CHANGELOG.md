@@ -1,3 +1,11 @@
+# Unreleased
+
+Added
+  * AZ-1159: Do not allow `deny_all_inbound` when `application_gateway_rules_enabled` is used
+
+Fixed
+  * AZ-1159: Change destination `VirtualNetwork` to `*` in `application_gateway_rules_enabled` rule
+
 # v7.4.0 - 2023-06-23
 
 Breaking

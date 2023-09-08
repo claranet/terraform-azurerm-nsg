@@ -121,7 +121,14 @@ resource "azurerm_network_security_rule" "appgw_health_probe_inbound" {
   source_port_range           = "*"
   destination_port_ranges     = ["65200-65535"]
   source_address_prefix       = "GatewayManager"
-  destination_address_prefix  = "VirtualNetwork"
+  destination_address_prefix  = "*"
+
+  lifecycle {
+    precondition {
+      condition     = !var.deny_all_inbound
+      error_message = "You can't use deny_all_inbound with application_gateway_rules_enabled."
+    }
+  }
 }
 
 resource "azurerm_network_security_rule" "lb_health_probe_inbound" {
