@@ -1,4 +1,4 @@
-# Unreleased
+# v7.6.0 - 2024-01-04
 
 Added
   * [GH-7](https://github.com/claranet/terraform-azurerm-nsg/pull/7) Add `var.extra_tags` to `azurerm_network_watcher_flow_log`
