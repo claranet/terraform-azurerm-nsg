@@ -31,5 +31,5 @@ resource "azurerm_network_watcher_flow_log" "nwfl" {
     interval_in_minutes   = var.flow_log_traffic_analytics_interval_in_minutes
   }
 
-  tags = local.default_tags
+  tags = merge(local.default_tags, var.extra_tags)
 }
