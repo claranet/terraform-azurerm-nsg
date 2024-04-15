@@ -276,7 +276,7 @@ No modules.
 | environment | Project environment | `string` | n/a | yes |
 | extra\_tags | Additional tags to associate with your Network Security Group. | `map(string)` | `{}` | no |
 | flow\_log\_enabled | Provision network watcher flow logs. | `bool` | `false` | no |
-| flow\_log\_location | The location where the Network Watcher Flow Log resides. Changing this forces a new resource to be created. Defaults to the `location` of the Network Watcher. | `string` | `null` | no |
+| flow\_log\_location | The location where the Network Watcher Flow Log resides. Changing this forces a new resource to be created. Defaults to the `location` of the Network Watcher if `use_existing_network_watcher = true`. | `string` | `null` | no |
 | flow\_log\_logging\_enabled | Enable Network Flow Logging. | `bool` | `true` | no |
 | flow\_log\_retention\_policy\_days | The number of days to retain flow log records. | `number` | `31` | no |
 | flow\_log\_retention\_policy\_enabled | Boolean flag to enable/disable retention. | `bool` | `true` | no |
@@ -294,13 +294,14 @@ No modules.
 | name\_prefix | Optional prefix for the generated name | `string` | `""` | no |
 | name\_suffix | Optional suffix for the generated name | `string` | `""` | no |
 | network\_watcher\_name | The name of the Network Watcher. Changing this forces a new resource to be created. | `string` | `null` | no |
-| network\_watcher\_resource\_group\_name | The name of the resource group in which the Network Watcher was deployed. Changing this forces a new resource to be created. | `string` | `null` | no |
+| network\_watcher\_resource\_group\_name | The name of the Resource Group in which the Network Watcher was deployed. Changing this forces a new resource to be created. | `string` | `null` | no |
 | nfs\_inbound\_allowed | True to allow inbound NFSv4 traffic | `bool` | `false` | no |
 | rdp\_inbound\_allowed | True to allow inbound RDP traffic | `bool` | `false` | no |
 | resource\_group\_name | Resource group name | `string` | n/a | yes |
 | ssh\_inbound\_allowed | True to allow inbound SSH traffic | `bool` | `false` | no |
 | stack | Project stack name | `string` | n/a | yes |
 | use\_caf\_naming | Use the Azure CAF naming provider to generate default resource name. `custom_network_security_group_name` override this if set. Legacy default name is used if this is set to `false`. | `bool` | `true` | no |
+| use\_existing\_network\_watcher | Whether to use an existing Network Watcher or not? Useful when the Network Watcher is created as part of this deployment. Defaults to `true`. | `bool` | `true` | no |
 | winrm\_inbound\_allowed | True to allow inbound secure WinRM traffic | `bool` | `false` | no |
 
 ## Outputs

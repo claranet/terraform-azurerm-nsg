@@ -10,6 +10,12 @@ variable "flow_log_logging_enabled" {
   default     = true
 }
 
+variable "use_existing_network_watcher" {
+  description = "Whether to use an existing Network Watcher or not? Useful when the Network Watcher is created as part of this deployment. Defaults to `true`."
+  type        = bool
+  default     = true
+}
+
 variable "network_watcher_name" {
   description = "The name of the Network Watcher. Changing this forces a new resource to be created."
   type        = string
@@ -17,7 +23,7 @@ variable "network_watcher_name" {
 }
 
 variable "network_watcher_resource_group_name" {
-  description = "The name of the resource group in which the Network Watcher was deployed. Changing this forces a new resource to be created."
+  description = "The name of the Resource Group in which the Network Watcher was deployed. Changing this forces a new resource to be created."
   type        = string
   default     = null
 }
@@ -71,7 +77,7 @@ variable "flow_log_traffic_analytics_interval_in_minutes" {
 }
 
 variable "flow_log_location" {
-  description = "The location where the Network Watcher Flow Log resides. Changing this forces a new resource to be created. Defaults to the `location` of the Network Watcher."
+  description = "The location where the Network Watcher Flow Log resides. Changing this forces a new resource to be created. Defaults to the `location` of the Network Watcher if `use_existing_network_watcher = true`."
   type        = string
   default     = null
 }
