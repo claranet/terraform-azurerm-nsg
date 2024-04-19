@@ -1,3 +1,21 @@
+## 7.7.0 (2024-04-19)
+
+
+### Features
+
+* **AZ-1392:** add parameter to prevent the use of the existing network watcher c6d9a7f
+
+
+### Continuous Integration
+
+* **AZ-1391:** enable semantic-release [skip ci] b162b71
+
+
+### Miscellaneous Chores
+
+* **deps:** add renovate.json a147923
+* **deps:** update renovate.json 3105818
+
 # v7.6.0 - 2024-01-04
 
 Added
