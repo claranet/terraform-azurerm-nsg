@@ -45,75 +45,6 @@ More details about variables set by the `terraform-wrapper` available in the [do
 [Hashicorp Terraform](https://github.com/hashicorp/terraform/). Instead, we recommend to use [OpenTofu](https://github.com/opentofu/opentofu/).
 
 ```hcl
-module "azure_region" {
-  source  = "claranet/regions/azurerm"
-  version = "x.x.x"
-
-  azure_region = var.azure_region
-}
-
-module "rg" {
-  source  = "claranet/rg/azurerm"
-  version = "x.x.x"
-
-  location    = module.azure_region.location
-  client_name = var.client_name
-  environment = var.environment
-  stack       = var.stack
-}
-
-module "logs" {
-  source  = "claranet/run/azurerm//modules/logs"
-  version = "x.x.x"
-
-  resource_group_name = module.rg.resource_group_name
-
-  client_name    = var.client_name
-  environment    = var.environment
-  location       = module.azure_region.location
-  location_short = module.azure_region.location_short
-  stack          = var.stack
-
-  # Log analytics
-  log_analytics_workspace_retention_in_days = 90
-
-  # Log storage account
-  logs_storage_account_enable_https_traffic_only         = true
-  logs_storage_min_tls_version                           = "TLS1_2"
-  logs_storage_account_enable_advanced_threat_protection = true
-
-  logs_storage_account_enable_archiving                      = true
-  tier_to_cool_after_days_since_modification_greater_than    = 30
-  tier_to_archive_after_days_since_modification_greater_than = 90
-  delete_after_days_since_modification_greater_than          = 2560 # 7 years
-
-  extra_tags = {
-    foo = "bar"
-  }
-}
-
-module "storage_account" {
-  source  = "claranet/storage-account/azurerm"
-  version = "x.x.x"
-
-  location       = module.azure_region.location
-  location_short = module.azure_region.location_short
-  client_name    = var.client_name
-  environment    = var.environment
-  stack          = var.stack
-
-  resource_group_name = module.rg.resource_group_name
-
-  logs_destinations_ids = [
-    module.logs.logs_storage_account_id,
-    module.logs.log_analytics_workspace_id
-  ]
-
-  extra_tags = {
-    foo = "bar"
-  }
-}
-
 data "azurerm_network_watcher" "network_watcher" {
   name                = "NetworkWatcher_${module.azure_region.location_cli}"
   resource_group_name = "NetworkWatcherRG"
@@ -130,7 +61,7 @@ module "network_security_group" {
   location       = module.azure_region.location
   location_short = module.azure_region.location_short
 
-  resource_group_name = module.rg.resource_group_name
+  resource_group_name = module.rg.name
 
   # To deactivate default deny all rule (not recommended)
   # deny_all_inbound = false
@@ -195,8 +126,8 @@ module "network_security_group" {
 resource "azurerm_network_security_rule" "mysql" {
   name = "my-mysql-rule"
 
-  resource_group_name         = module.rg.resource_group_name
-  network_security_group_name = module.network_security_group.network_security_group_name
+  resource_group_name         = module.rg.name
+  network_security_group_name = module.network_security_group.name
 
   priority                   = 100
   direction                  = "Inbound"
@@ -212,8 +143,8 @@ resource "azurerm_network_security_rule" "mysql" {
 resource "azurerm_network_security_rule" "custom" {
   name = "my-custom-rule"
 
-  resource_group_name         = module.rg.resource_group_name
-  network_security_group_name = module.network_security_group.network_security_group_name
+  resource_group_name         = module.rg.name
+  network_security_group_name = module.network_security_group.name
 
   priority                   = 200
   direction                  = "Inbound"
@@ -230,8 +161,8 @@ resource "azurerm_network_security_rule" "custom" {
 
 | Name | Version |
 |------|---------|
-| azurecaf | ~> 1.2, >= 1.2.22 |
-| azurerm | ~> 3.0 |
+| azurecaf | ~> 1.2.28 |
+| azurerm | ~> 4.0 |
 
 ## Modules
 
@@ -241,7 +172,7 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [azurerm_network_security_group.nsg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_group) | resource |
+| [azurerm_network_security_group.main](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_group) | resource |
 | [azurerm_network_security_rule.appgw_health_probe_inbound](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule) | resource |
 | [azurerm_network_security_rule.cifs_inbound](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule) | resource |
 | [azurerm_network_security_rule.deny_all_inbound](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule) | resource |
@@ -249,8 +180,8 @@ No modules.
 | [azurerm_network_security_rule.https_inbound](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule) | resource |
 | [azurerm_network_security_rule.lb_health_probe_inbound](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule) | resource |
 | [azurerm_network_security_rule.nfs_inbound](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule) | resource |
-| [azurerm_network_security_rule.nsg_rule](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule) | resource |
 | [azurerm_network_security_rule.rdp_inbound](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule) | resource |
+| [azurerm_network_security_rule.rule](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule) | resource |
 | [azurerm_network_security_rule.ssh_inbound](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule) | resource |
 | [azurerm_network_security_rule.winrm_inbound](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule) | resource |
 | [azurerm_network_watcher_flow_log.nwfl](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_watcher_flow_log) | resource |
@@ -271,13 +202,13 @@ No modules.
 | allowed\_ssh\_source | Allowed source for inbound SSH traffic. Can be a Service Tag, "*" or a CIDR list. | `any` | `[]` | no |
 | allowed\_winrm\_source | Allowed source for inbound WinRM traffic. Can be a Service Tag, "*" or a CIDR list. | `any` | `[]` | no |
 | application\_gateway\_rules\_enabled | True to configure rules mandatory for hosting an Application Gateway. See https://docs.microsoft.com/en-us/azure/application-gateway/configuration-infrastructure#allow-access-to-a-few-source-ips | `bool` | `false` | no |
-| cifs\_inbound\_allowed | True to allow inbound CIFS traffic | `bool` | `false` | no |
-| client\_name | Client name/account used in naming | `string` | n/a | yes |
+| cifs\_inbound\_allowed | True to allow inbound CIFS traffic. | `bool` | `false` | no |
+| client\_name | Client name/account used in naming. | `string` | n/a | yes |
 | custom\_network\_security\_group\_name | Security Group custom name. | `string` | `null` | no |
 | custom\_network\_watcher\_flow\_log\_name | Network watcher flow log name. | `string` | `null` | no |
 | default\_tags\_enabled | Option to enable or disable default tags. | `bool` | `true` | no |
-| deny\_all\_inbound | True to deny all inbound traffic by default | `bool` | `true` | no |
-| environment | Project environment | `string` | n/a | yes |
+| deny\_all\_inbound | True to deny all inbound traffic by default. | `bool` | `true` | no |
+| environment | Project environment. | `string` | n/a | yes |
 | extra\_tags | Additional tags to associate with your Network Security Group. | `map(string)` | `{}` | no |
 | flow\_log\_enabled | Provision network watcher flow logs. | `bool` | `false` | no |
 | flow\_log\_location | The location where the Network Watcher Flow Log resides. Changing this forces a new resource to be created. Defaults to the `location` of the Network Watcher if `use_existing_network_watcher = true`. | `string` | `null` | no |
@@ -287,35 +218,36 @@ No modules.
 | flow\_log\_storage\_account\_id | Network watcher flow log storage account ID. | `string` | `null` | no |
 | flow\_log\_traffic\_analytics\_enabled | Boolean flag to enable/disable traffic analytics. | `bool` | `true` | no |
 | flow\_log\_traffic\_analytics\_interval\_in\_minutes | How frequently service should do flow analytics in minutes. | `number` | `10` | no |
-| http\_inbound\_allowed | True to allow inbound HTTP traffic | `bool` | `false` | no |
-| https\_inbound\_allowed | True to allow inbound HTTPS traffic | `bool` | `false` | no |
+| http\_inbound\_allowed | True to allow inbound HTTP traffic. | `bool` | `false` | no |
+| https\_inbound\_allowed | True to allow inbound HTTPS traffic. | `bool` | `false` | no |
 | load\_balancer\_rules\_enabled | True to configure rules mandatory for hosting a Load Balancer. | `bool` | `false` | no |
 | location | Azure location. | `string` | n/a | yes |
 | location\_short | Short string for Azure location. | `string` | n/a | yes |
 | log\_analytics\_workspace\_guid | The resource GUID of the attached workspace. | `string` | `null` | no |
 | log\_analytics\_workspace\_id | The resource ID of the attached workspace. | `string` | `null` | no |
 | log\_analytics\_workspace\_location | The location of the attached workspace. | `string` | `null` | no |
-| name\_prefix | Optional prefix for the generated name | `string` | `""` | no |
-| name\_suffix | Optional suffix for the generated name | `string` | `""` | no |
+| name\_prefix | Optional prefix for the generated name. | `string` | `""` | no |
+| name\_suffix | Optional suffix for the generated name. | `string` | `""` | no |
 | network\_watcher\_name | The name of the Network Watcher. Changing this forces a new resource to be created. | `string` | `null` | no |
 | network\_watcher\_resource\_group\_name | The name of the Resource Group in which the Network Watcher was deployed. Changing this forces a new resource to be created. | `string` | `null` | no |
-| nfs\_inbound\_allowed | True to allow inbound NFSv4 traffic | `bool` | `false` | no |
-| rdp\_inbound\_allowed | True to allow inbound RDP traffic | `bool` | `false` | no |
-| resource\_group\_name | Resource group name | `string` | n/a | yes |
-| ssh\_inbound\_allowed | True to allow inbound SSH traffic | `bool` | `false` | no |
-| stack | Project stack name | `string` | n/a | yes |
-| use\_caf\_naming | Use the Azure CAF naming provider to generate default resource name. `custom_network_security_group_name` override this if set. Legacy default name is used if this is set to `false`. | `bool` | `true` | no |
+| nfs\_inbound\_allowed | True to allow inbound NFSv4 traffic. | `bool` | `false` | no |
+| rdp\_inbound\_allowed | True to allow inbound RDP traffic. | `bool` | `false` | no |
+| resource\_group\_name | Resource group name. | `string` | n/a | yes |
+| ssh\_inbound\_allowed | True to allow inbound SSH traffic. | `bool` | `false` | no |
+| stack | Project stack name. | `string` | n/a | yes |
 | use\_existing\_network\_watcher | Whether to use an existing Network Watcher or not? Useful when the Network Watcher is created as part of this deployment. Defaults to `true`. | `bool` | `true` | no |
-| winrm\_inbound\_allowed | True to allow inbound secure WinRM traffic | `bool` | `false` | no |
+| winrm\_inbound\_allowed | True to allow inbound secure WinRM traffic. | `bool` | `false` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| network\_security\_group\_id | Network security group ID |
-| network\_security\_group\_name | Network security group name |
-| network\_security\_group\_rg\_name | Network security group resource group name |
-| network\_watcher\_flow\_log\_id | Network watcher flow log ID |
+| id | Network security group ID. |
+| name | Network security group Name. |
+| network\_watcher\_flow\_log\_id | Network watcher flow log ID. |
+| network\_watcher\_flow\_log\_resource | Network watcher flow log resource object. |
+| resource | Network security group resource object. |
+| rg\_name | Network security group resource group name. |
 <!-- END_TF_DOCS -->
 ## Related documentation
 
