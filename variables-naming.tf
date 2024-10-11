@@ -12,7 +12,7 @@ variable "name_suffix" {
 }
 
 # Custom naming override
-variable "custom_network_security_group_name" {
+variable "custom_name" {
   description = "Security Group custom name."
   type        = string
   default     = null

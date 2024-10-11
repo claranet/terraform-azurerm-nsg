@@ -67,10 +67,10 @@ module "network_security_group" {
   # deny_all_inbound = false
 
   https_inbound_allowed = true
-  allowed_https_source  = ["11.12.13.14/32", "10.0.0.0/24"]
+  https_source_allowed  = ["11.12.13.14/32", "10.0.0.0/24"]
 
   ssh_inbound_allowed = true
-  allowed_ssh_source  = "VirtualNetwork"
+  ssh_source_allowed  = "VirtualNetwork"
 
   # You can set either a prefix for generated name or a custom one for the resource naming
   # custom_network_security_group_names = "my_nsg"
@@ -90,13 +90,13 @@ module "network_security_group" {
   # Make sure to use a storage account with no existing lifecycle management rules
   # as this will adds a new rule and overwrites the existing one.
   # Fore more details, see https://github.com/hashicorp/terraform-provider-azurerm/issues/6935
-  flow_log_storage_account_id                    = module.storage_account.storage_account_id
+  flow_log_storage_account_id                    = module.storage_account.id
   flow_log_traffic_analytics_enabled             = true # default to false
   flow_log_traffic_analytics_interval_in_minutes = 10   # default to 10
 
   log_analytics_workspace_guid     = module.logs.log_analytics_workspace_guid
   log_analytics_workspace_location = module.azure_region.location
-  log_analytics_workspace_id       = module.logs.log_analytics_workspace_id
+  log_analytics_workspace_id       = module.logs.id
 
   additional_rules = [
     {
@@ -179,35 +179,29 @@ No modules.
 | [azurerm_network_security_rule.http_inbound](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule) | resource |
 | [azurerm_network_security_rule.https_inbound](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule) | resource |
 | [azurerm_network_security_rule.lb_health_probe_inbound](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule) | resource |
+| [azurerm_network_security_rule.main](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule) | resource |
 | [azurerm_network_security_rule.nfs_inbound](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule) | resource |
 | [azurerm_network_security_rule.rdp_inbound](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule) | resource |
-| [azurerm_network_security_rule.rule](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule) | resource |
 | [azurerm_network_security_rule.ssh_inbound](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule) | resource |
 | [azurerm_network_security_rule.winrm_inbound](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule) | resource |
-| [azurerm_network_watcher_flow_log.nwfl](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_watcher_flow_log) | resource |
+| [azurerm_network_watcher_flow_log.main](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_watcher_flow_log) | resource |
 | [azurecaf_name.nsg](https://registry.terraform.io/providers/claranet/azurecaf/latest/docs/data-sources/name) | data source |
 | [azurecaf_name.nwflog](https://registry.terraform.io/providers/claranet/azurecaf/latest/docs/data-sources/name) | data source |
-| [azurerm_network_watcher.nw](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/network_watcher) | data source |
+| [azurerm_network_watcher.main](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/network_watcher) | data source |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| additional\_rules | Additional network security group rules to add. For arguements please refer to https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule#argument-reference | <pre>list(object({<br/>    priority  = number<br/>    name      = string<br/>    direction = optional(string, "Inbound")<br/>    access    = optional(string, "Allow")<br/>    protocol  = optional(string, "Tcp")<br/><br/>    source_port_range  = optional(string)<br/>    source_port_ranges = optional(list(string))<br/><br/>    destination_port_range  = optional(string)<br/>    destination_port_ranges = optional(list(string))<br/><br/>    source_address_prefix   = optional(string)<br/>    source_address_prefixes = optional(list(string))<br/><br/>    destination_address_prefix   = optional(string)<br/>    destination_address_prefixes = optional(list(string))<br/>  }))</pre> | `[]` | no |
-| allowed\_cifs\_source | Allowed source for inbound CIFS traffic. Can be a Service Tag, "*" or a CIDR list. | `any` | `[]` | no |
-| allowed\_http\_source | Allowed source for inbound HTTP traffic. Can be a Service Tag, "*" or a CIDR list. | `any` | `[]` | no |
-| allowed\_https\_source | Allowed source for inbound HTTPS traffic. Can be a Service Tag, "*" or a CIDR list. | `any` | `[]` | no |
-| allowed\_nfs\_source | Allowed source for inbound NFSv4 traffic. Can be a Service Tag, "*" or a CIDR list. | `any` | `[]` | no |
-| allowed\_rdp\_source | Allowed source for inbound RDP traffic. Can be a Service Tag, "*" or a CIDR list. | `any` | `[]` | no |
-| allowed\_ssh\_source | Allowed source for inbound SSH traffic. Can be a Service Tag, "*" or a CIDR list. | `any` | `[]` | no |
-| allowed\_winrm\_source | Allowed source for inbound WinRM traffic. Can be a Service Tag, "*" or a CIDR list. | `any` | `[]` | no |
-| application\_gateway\_rules\_enabled | True to configure rules mandatory for hosting an Application Gateway. See https://docs.microsoft.com/en-us/azure/application-gateway/configuration-infrastructure#allow-access-to-a-few-source-ips | `bool` | `false` | no |
+| additional\_rules | Additional network security group rules to add. For arguements please refer to [documentation](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule#argument-reference) | <pre>list(object({<br/>    priority  = number<br/>    name      = string<br/>    direction = optional(string, "Inbound")<br/>    access    = optional(string, "Allow")<br/>    protocol  = optional(string, "Tcp")<br/><br/>    source_port_range  = optional(string)<br/>    source_port_ranges = optional(list(string))<br/><br/>    destination_port_range  = optional(string)<br/>    destination_port_ranges = optional(list(string))<br/><br/>    source_address_prefix   = optional(string)<br/>    source_address_prefixes = optional(list(string))<br/><br/>    destination_address_prefix   = optional(string)<br/>    destination_address_prefixes = optional(list(string))<br/>  }))</pre> | `[]` | no |
+| all\_inbound\_denied | True to deny all inbound traffic by default. | `bool` | `true` | no |
+| application\_gateway\_rules\_enabled | True to configure rules mandatory for hosting an Application Gateway. See [documentation](https://docs.microsoft.com/en-us/azure/application-gateway/configuration-infrastructure#allow-access-to-a-few-source-ips) | `bool` | `false` | no |
 | cifs\_inbound\_allowed | True to allow inbound CIFS traffic. | `bool` | `false` | no |
+| cifs\_source\_allowed | Allowed source for inbound CIFS traffic. Can be a Service Tag, "*" or a CIDR list. | `any` | `[]` | no |
 | client\_name | Client name/account used in naming. | `string` | n/a | yes |
-| custom\_network\_security\_group\_name | Security Group custom name. | `string` | `null` | no |
+| custom\_name | Security Group custom name. | `string` | `null` | no |
 | custom\_network\_watcher\_flow\_log\_name | Network watcher flow log name. | `string` | `null` | no |
 | default\_tags\_enabled | Option to enable or disable default tags. | `bool` | `true` | no |
-| deny\_all\_inbound | True to deny all inbound traffic by default. | `bool` | `true` | no |
 | environment | Project environment. | `string` | n/a | yes |
 | extra\_tags | Additional tags to associate with your Network Security Group. | `map(string)` | `{}` | no |
 | flow\_log\_enabled | Provision network watcher flow logs. | `bool` | `false` | no |
@@ -219,7 +213,9 @@ No modules.
 | flow\_log\_traffic\_analytics\_enabled | Boolean flag to enable/disable traffic analytics. | `bool` | `true` | no |
 | flow\_log\_traffic\_analytics\_interval\_in\_minutes | How frequently service should do flow analytics in minutes. | `number` | `10` | no |
 | http\_inbound\_allowed | True to allow inbound HTTP traffic. | `bool` | `false` | no |
+| http\_source\_allowed | Allowed source for inbound HTTP traffic. Can be a Service Tag, "*" or a CIDR list. | `any` | `[]` | no |
 | https\_inbound\_allowed | True to allow inbound HTTPS traffic. | `bool` | `false` | no |
+| https\_source\_allowed | Allowed source for inbound HTTPS traffic. Can be a Service Tag, "*" or a CIDR list. | `any` | `[]` | no |
 | load\_balancer\_rules\_enabled | True to configure rules mandatory for hosting a Load Balancer. | `bool` | `false` | no |
 | location | Azure location. | `string` | n/a | yes |
 | location\_short | Short string for Azure location. | `string` | n/a | yes |
@@ -231,23 +227,27 @@ No modules.
 | network\_watcher\_name | The name of the Network Watcher. Changing this forces a new resource to be created. | `string` | `null` | no |
 | network\_watcher\_resource\_group\_name | The name of the Resource Group in which the Network Watcher was deployed. Changing this forces a new resource to be created. | `string` | `null` | no |
 | nfs\_inbound\_allowed | True to allow inbound NFSv4 traffic. | `bool` | `false` | no |
+| nfs\_source\_allowed | Allowed source for inbound NFSv4 traffic. Can be a Service Tag, "*" or a CIDR list. | `any` | `[]` | no |
 | rdp\_inbound\_allowed | True to allow inbound RDP traffic. | `bool` | `false` | no |
+| rdp\_source\_allowed | Allowed source for inbound RDP traffic. Can be a Service Tag, "*" or a CIDR list. | `any` | `[]` | no |
 | resource\_group\_name | Resource group name. | `string` | n/a | yes |
 | ssh\_inbound\_allowed | True to allow inbound SSH traffic. | `bool` | `false` | no |
+| ssh\_source\_allowed | Allowed source for inbound SSH traffic. Can be a Service Tag, "*" or a CIDR list. | `any` | `[]` | no |
 | stack | Project stack name. | `string` | n/a | yes |
 | use\_existing\_network\_watcher | Whether to use an existing Network Watcher or not? Useful when the Network Watcher is created as part of this deployment. Defaults to `true`. | `bool` | `true` | no |
 | winrm\_inbound\_allowed | True to allow inbound secure WinRM traffic. | `bool` | `false` | no |
+| winrm\_source\_allowed | Allowed source for inbound WinRM traffic. Can be a Service Tag, "*" or a CIDR list. | `any` | `[]` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
 | id | Network security group ID. |
-| name | Network security group Name. |
+| name | Network security group name. |
 | network\_watcher\_flow\_log\_id | Network watcher flow log ID. |
 | network\_watcher\_flow\_log\_resource | Network watcher flow log resource object. |
 | resource | Network security group resource object. |
-| rg\_name | Network security group resource group name. |
+| resource\_group\_name | Network security group resource group name. |
 <!-- END_TF_DOCS -->
 ## Related documentation
 

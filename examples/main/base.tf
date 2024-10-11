@@ -30,14 +30,14 @@ module "logs" {
   stack          = var.stack
 
   # Log analytics
-  log_analytics_workspace_retention_in_days = 90
+  workspace_retention_in_days = 90
 
   # Log storage account
-  logs_storage_account_enable_https_traffic_only         = true
-  logs_storage_min_tls_version                           = "TLS1_2"
-  logs_storage_account_enable_advanced_threat_protection = true
+  storage_account_https_traffic_only_enabled         = true
+  storage_account_min_tls_version                    = "TLS1_2"
+  storage_account_advanced_threat_protection_enabled = true
+  storage_account_archiving_enabled                  = true
 
-  logs_storage_account_enable_archiving                      = true
   tier_to_cool_after_days_since_modification_greater_than    = 30
   tier_to_archive_after_days_since_modification_greater_than = 90
   delete_after_days_since_modification_greater_than          = 2560 # 7 years
@@ -60,8 +60,8 @@ module "storage_account" {
   resource_group_name = module.rg.name
 
   logs_destinations_ids = [
-    module.logs.logs_storage_account_id,
-    module.logs.log_analytics_workspace_id
+    module.logs.storage_account_id,
+    module.logs.id
   ]
 
   extra_tags = {

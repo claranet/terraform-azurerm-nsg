@@ -1,5 +1,5 @@
 resource "azurerm_network_security_group" "main" {
-  name = local.nsg_name
+  name = local.name
 
   resource_group_name = var.resource_group_name
   location            = var.location
@@ -13,7 +13,7 @@ moved {
 }
 
 resource "azurerm_network_security_rule" "deny_all_inbound" {
-  count = var.deny_all_inbound ? 1 : 0
+  count = var.all_inbound_denied ? 1 : 0
 
   name                        = "deny-all-inbound"
   resource_group_name         = var.resource_group_name
@@ -45,8 +45,8 @@ resource "azurerm_network_security_rule" "http_inbound" {
   protocol                    = "Tcp"
   source_port_range           = "*"
   destination_port_range      = "80"
-  source_address_prefix       = try(tostring(var.allowed_http_source), null)
-  source_address_prefixes     = try(tolist(var.allowed_http_source), null)
+  source_address_prefix       = try(tostring(var.http_source_allowed), null)
+  source_address_prefixes     = try(tolist(var.http_source_allowed), null)
   destination_address_prefix  = "VirtualNetwork"
 }
 
@@ -67,8 +67,8 @@ resource "azurerm_network_security_rule" "https_inbound" {
   protocol                    = "Tcp"
   source_port_range           = "*"
   destination_port_range      = "443"
-  source_address_prefix       = try(tostring(var.allowed_https_source), null)
-  source_address_prefixes     = try(tolist(var.allowed_https_source), null)
+  source_address_prefix       = try(tostring(var.https_source_allowed), null)
+  source_address_prefixes     = try(tolist(var.https_source_allowed), null)
   destination_address_prefix  = "VirtualNetwork"
 }
 
@@ -89,8 +89,8 @@ resource "azurerm_network_security_rule" "ssh_inbound" {
   protocol                    = "Tcp"
   source_port_range           = "*"
   destination_port_range      = "22"
-  source_address_prefix       = try(tostring(var.allowed_ssh_source), null)
-  source_address_prefixes     = try(tolist(var.allowed_ssh_source), null)
+  source_address_prefix       = try(tostring(var.ssh_source_allowed), null)
+  source_address_prefixes     = try(tolist(var.ssh_source_allowed), null)
   destination_address_prefix  = "VirtualNetwork"
 }
 
@@ -111,8 +111,8 @@ resource "azurerm_network_security_rule" "rdp_inbound" {
   protocol                    = "Tcp"
   source_port_range           = "*"
   destination_port_range      = "3389"
-  source_address_prefix       = try(tostring(var.allowed_rdp_source), null)
-  source_address_prefixes     = try(tolist(var.allowed_rdp_source), null)
+  source_address_prefix       = try(tostring(var.rdp_source_allowed), null)
+  source_address_prefixes     = try(tolist(var.rdp_source_allowed), null)
   destination_address_prefix  = "VirtualNetwork"
 }
 
@@ -133,8 +133,8 @@ resource "azurerm_network_security_rule" "winrm_inbound" {
   protocol                    = "Tcp"
   source_port_range           = "*"
   destination_port_range      = "5986"
-  source_address_prefix       = try(tostring(var.allowed_winrm_source), null)
-  source_address_prefixes     = try(tolist(var.allowed_winrm_source), null)
+  source_address_prefix       = try(tostring(var.winrm_source_allowed), null)
+  source_address_prefixes     = try(tolist(var.winrm_source_allowed), null)
   destination_address_prefix  = "VirtualNetwork"
 }
 
@@ -160,8 +160,8 @@ resource "azurerm_network_security_rule" "appgw_health_probe_inbound" {
 
   lifecycle {
     precondition {
-      condition     = !var.deny_all_inbound
-      error_message = "You can't use deny_all_inbound with application_gateway_rules_enabled."
+      condition     = !var.all_inbound_denied
+      error_message = "You can't use `all_inbound_denied` with `application_gateway_rules_enabled`."
     }
   }
 }
@@ -204,8 +204,8 @@ resource "azurerm_network_security_rule" "nfs_inbound" {
   protocol                    = "*"
   source_port_range           = "*"
   destination_port_range      = "2049"
-  source_address_prefix       = try(tostring(var.allowed_nfs_source), null)
-  source_address_prefixes     = try(tolist(var.allowed_nfs_source), null)
+  source_address_prefix       = try(tostring(var.nfs_source_allowed), null)
+  source_address_prefixes     = try(tolist(var.nfs_source_allowed), null)
   destination_address_prefix  = "VirtualNetwork"
 }
 
@@ -226,8 +226,8 @@ resource "azurerm_network_security_rule" "cifs_inbound" {
   protocol                    = "*"
   source_port_range           = "*"
   destination_port_ranges     = ["137", "138", "139", "445"]
-  source_address_prefix       = try(tostring(var.allowed_cifs_source), null)
-  source_address_prefixes     = try(tolist(var.allowed_cifs_source), null)
+  source_address_prefix       = try(tostring(var.cifs_source_allowed), null)
+  source_address_prefixes     = try(tolist(var.cifs_source_allowed), null)
   destination_address_prefix  = "VirtualNetwork"
 }
 

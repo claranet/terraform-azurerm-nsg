@@ -1,4 +1,4 @@
-variable "deny_all_inbound" {
+variable "all_inbound_denied" {
   description = "True to deny all inbound traffic by default."
   type        = bool
   default     = true
@@ -10,15 +10,15 @@ variable "http_inbound_allowed" {
   default     = false
 }
 
-variable "allowed_http_source" {
+variable "http_source_allowed" {
   description = "Allowed source for inbound HTTP traffic. Can be a Service Tag, \"*\" or a CIDR list."
   type        = any
   default     = []
   validation {
     condition = (
-      var.allowed_http_source != null &&
-      var.allowed_http_source != "" &&
-      (can(tolist(var.allowed_http_source)) || can(tostring(var.allowed_http_source)))
+      var.http_source_allowed != null &&
+      var.http_source_allowed != "" &&
+      (can(tolist(var.http_source_allowed)) || can(tostring(var.http_source_allowed)))
     )
     error_message = "Variable must be a Service Tag, \"*\" or a list of CIDR."
   }
@@ -30,15 +30,15 @@ variable "https_inbound_allowed" {
   default     = false
 }
 
-variable "allowed_https_source" {
+variable "https_source_allowed" {
   description = "Allowed source for inbound HTTPS traffic. Can be a Service Tag, \"*\" or a CIDR list."
   type        = any
   default     = []
   validation {
     condition = (
-      var.allowed_https_source != null &&
-      var.allowed_https_source != "" &&
-      (can(tolist(var.allowed_https_source)) || can(tostring(var.allowed_https_source)))
+      var.https_source_allowed != null &&
+      var.https_source_allowed != "" &&
+      (can(tolist(var.https_source_allowed)) || can(tostring(var.https_source_allowed)))
     )
     error_message = "Variable must be a Service Tag, \"*\" or a list of CIDR."
   }
@@ -50,15 +50,15 @@ variable "ssh_inbound_allowed" {
   default     = false
 }
 
-variable "allowed_ssh_source" {
+variable "ssh_source_allowed" {
   description = "Allowed source for inbound SSH traffic. Can be a Service Tag, \"*\" or a CIDR list."
   type        = any
   default     = []
   validation {
     condition = (
-      var.allowed_ssh_source != null &&
-      var.allowed_ssh_source != "" &&
-      (can(tolist(var.allowed_ssh_source)) || can(tostring(var.allowed_ssh_source)))
+      var.ssh_source_allowed != null &&
+      var.ssh_source_allowed != "" &&
+      (can(tolist(var.ssh_source_allowed)) || can(tostring(var.ssh_source_allowed)))
     )
     error_message = "Variable must be a Service Tag, \"*\" or a list of CIDR."
   }
@@ -70,15 +70,15 @@ variable "rdp_inbound_allowed" {
   default     = false
 }
 
-variable "allowed_rdp_source" {
+variable "rdp_source_allowed" {
   description = "Allowed source for inbound RDP traffic. Can be a Service Tag, \"*\" or a CIDR list."
   type        = any
   default     = []
   validation {
     condition = (
-      var.allowed_rdp_source != null &&
-      var.allowed_rdp_source != "" &&
-      (can(tolist(var.allowed_rdp_source)) || can(tostring(var.allowed_rdp_source)))
+      var.rdp_source_allowed != null &&
+      var.rdp_source_allowed != "" &&
+      (can(tolist(var.rdp_source_allowed)) || can(tostring(var.rdp_source_allowed)))
     )
     error_message = "Variable must be a Service Tag, \"*\" or a list of CIDR."
   }
@@ -90,22 +90,22 @@ variable "winrm_inbound_allowed" {
   default     = false
 }
 
-variable "allowed_winrm_source" {
+variable "winrm_source_allowed" {
   description = "Allowed source for inbound WinRM traffic. Can be a Service Tag, \"*\" or a CIDR list."
   type        = any
   default     = []
   validation {
     condition = (
-      var.allowed_winrm_source != null &&
-      var.allowed_winrm_source != "" &&
-      (can(tolist(var.allowed_winrm_source)) || can(tostring(var.allowed_winrm_source)))
+      var.winrm_source_allowed != null &&
+      var.winrm_source_allowed != "" &&
+      (can(tolist(var.winrm_source_allowed)) || can(tostring(var.winrm_source_allowed)))
     )
     error_message = "Variable must be a Service Tag, \"*\" or a list of CIDR."
   }
 }
 
 variable "application_gateway_rules_enabled" {
-  description = "True to configure rules mandatory for hosting an Application Gateway. See https://docs.microsoft.com/en-us/azure/application-gateway/configuration-infrastructure#allow-access-to-a-few-source-ips"
+  description = "True to configure rules mandatory for hosting an Application Gateway. See [documentation](https://docs.microsoft.com/en-us/azure/application-gateway/configuration-infrastructure#allow-access-to-a-few-source-ips)"
   type        = bool
   default     = false
 }
@@ -117,7 +117,7 @@ variable "load_balancer_rules_enabled" {
 }
 
 variable "additional_rules" {
-  description = "Additional network security group rules to add. For arguements please refer to https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule#argument-reference"
+  description = "Additional network security group rules to add. For arguements please refer to [documentation](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule#argument-reference)"
   type = list(object({
     priority  = number
     name      = string
@@ -146,15 +146,15 @@ variable "nfs_inbound_allowed" {
   default     = false
 }
 
-variable "allowed_nfs_source" {
+variable "nfs_source_allowed" {
   description = "Allowed source for inbound NFSv4 traffic. Can be a Service Tag, \"*\" or a CIDR list."
   type        = any
   default     = []
   validation {
     condition = (
-      var.allowed_nfs_source != null &&
-      var.allowed_nfs_source != "" &&
-      (can(tolist(var.allowed_nfs_source)) || can(tostring(var.allowed_nfs_source)))
+      var.nfs_source_allowed != null &&
+      var.nfs_source_allowed != "" &&
+      (can(tolist(var.nfs_source_allowed)) || can(tostring(var.nfs_source_allowed)))
     )
     error_message = "Variable must be a Service Tag, \"*\" or a list of CIDR."
   }
@@ -166,15 +166,15 @@ variable "cifs_inbound_allowed" {
   default     = false
 }
 
-variable "allowed_cifs_source" {
+variable "cifs_source_allowed" {
   description = "Allowed source for inbound CIFS traffic. Can be a Service Tag, \"*\" or a CIDR list."
   type        = any
   default     = []
   validation {
     condition = (
-      var.allowed_cifs_source != null &&
-      var.allowed_cifs_source != "" &&
-      (can(tolist(var.allowed_cifs_source)) || can(tostring(var.allowed_cifs_source)))
+      var.cifs_source_allowed != null &&
+      var.cifs_source_allowed != "" &&
+      (can(tolist(var.cifs_source_allowed)) || can(tostring(var.cifs_source_allowed)))
     )
     error_message = "Variable must be a Service Tag, \"*\" or a list of CIDR."
   }

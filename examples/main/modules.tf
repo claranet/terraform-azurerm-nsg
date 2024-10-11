@@ -20,10 +20,10 @@ module "network_security_group" {
   # deny_all_inbound = false
 
   https_inbound_allowed = true
-  allowed_https_source  = ["11.12.13.14/32", "10.0.0.0/24"]
+  https_source_allowed  = ["11.12.13.14/32", "10.0.0.0/24"]
 
   ssh_inbound_allowed = true
-  allowed_ssh_source  = "VirtualNetwork"
+  ssh_source_allowed  = "VirtualNetwork"
 
   # You can set either a prefix for generated name or a custom one for the resource naming
   # custom_network_security_group_names = "my_nsg"
@@ -43,13 +43,13 @@ module "network_security_group" {
   # Make sure to use a storage account with no existing lifecycle management rules
   # as this will adds a new rule and overwrites the existing one.
   # Fore more details, see https://github.com/hashicorp/terraform-provider-azurerm/issues/6935
-  flow_log_storage_account_id                    = module.storage_account.storage_account_id
+  flow_log_storage_account_id                    = module.storage_account.id
   flow_log_traffic_analytics_enabled             = true # default to false
   flow_log_traffic_analytics_interval_in_minutes = 10   # default to 10
 
   log_analytics_workspace_guid     = module.logs.log_analytics_workspace_guid
   log_analytics_workspace_location = module.azure_region.location
-  log_analytics_workspace_id       = module.logs.log_analytics_workspace_id
+  log_analytics_workspace_id       = module.logs.id
 
   additional_rules = [
     {
