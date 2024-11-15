@@ -1,22 +1,15 @@
-data "azurerm_network_watcher" "nw" {
-  count = var.flow_log_enabled && var.use_existing_network_watcher ? 1 : 0
-
-  name                = var.network_watcher_name
-  resource_group_name = var.network_watcher_resource_group_name
-}
-
-resource "azurerm_network_watcher_flow_log" "nwfl" {
+resource "azurerm_network_watcher_flow_log" "main" {
   count = var.flow_log_enabled ? 1 : 0
 
   name                 = local.flow_log_name
-  network_watcher_name = var.use_existing_network_watcher ? one(data.azurerm_network_watcher.nw[*].name) : var.network_watcher_name
-  resource_group_name  = var.use_existing_network_watcher ? one(data.azurerm_network_watcher.nw[*].resource_group_name) : coalesce(var.network_watcher_resource_group_name, var.resource_group_name)
+  network_watcher_name = var.use_existing_network_watcher ? one(data.azurerm_network_watcher.main[*].name) : var.network_watcher_name
+  resource_group_name  = var.use_existing_network_watcher ? one(data.azurerm_network_watcher.main[*].resource_group_name) : coalesce(var.network_watcher_resource_group_name, var.resource_group_name)
 
-  network_security_group_id = azurerm_network_security_group.nsg.id
+  network_security_group_id = azurerm_network_security_group.main.id
   storage_account_id        = var.flow_log_storage_account_id
   enabled                   = var.flow_log_logging_enabled
 
-  location = var.use_existing_network_watcher ? coalesce(var.flow_log_location, one(data.azurerm_network_watcher.nw[*].location)) : coalesce(var.flow_log_location, var.location)
+  location = var.use_existing_network_watcher ? coalesce(var.flow_log_location, one(data.azurerm_network_watcher.main[*].location)) : coalesce(var.flow_log_location, var.location)
 
   retention_policy {
     enabled = var.flow_log_retention_policy_enabled
@@ -32,4 +25,9 @@ resource "azurerm_network_watcher_flow_log" "nwfl" {
   }
 
   tags = merge(local.default_tags, var.extra_tags)
+}
+
+moved {
+  from = azurerm_network_watcher_flow_log.nwfl
+  to   = azurerm_network_watcher_flow_log.main
 }
