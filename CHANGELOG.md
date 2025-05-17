@@ -1,3 +1,10 @@
+## Unreleased
+
+### Fixes
+
+* **[GH-9](https://github.com/claranet/terraform-azurerm-nsg/pull/9):** skip `traffic_analytics` block validation when not enabled
+
+
 ## 8.0.0 (2024-11-15)
 
 ### ⚠ BREAKING CHANGES
