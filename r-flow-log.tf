@@ -16,12 +16,15 @@ resource "azurerm_network_watcher_flow_log" "main" {
     days    = var.flow_log_retention_policy_days
   }
 
-  traffic_analytics {
-    enabled               = var.flow_log_traffic_analytics_enabled
-    workspace_id          = var.log_analytics_workspace_guid
-    workspace_region      = var.log_analytics_workspace_location
-    workspace_resource_id = var.log_analytics_workspace_id
-    interval_in_minutes   = var.flow_log_traffic_analytics_interval_in_minutes
+  dynamic "traffic_analytics" {
+    for_each = var.flow_log_traffic_analytics_enabled ? ["enabled"] : []
+    content {
+      enabled               = var.flow_log_traffic_analytics_enabled
+      workspace_id          = var.log_analytics_workspace_guid
+      workspace_region      = var.log_analytics_workspace_location
+      workspace_resource_id = var.log_analytics_workspace_id
+      interval_in_minutes   = var.flow_log_traffic_analytics_interval_in_minutes
+    }
   }
 
   tags = merge(local.default_tags, var.extra_tags)
