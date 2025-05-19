@@ -1,3 +1,39 @@
+## 8.0.1 (2025-05-19)
+
+### Bug Fixes
+
+* skip `traffic_analytics` vars validation when not enabled fea232d
+
+### Miscellaneous Chores
+
+* **deps:** update dependency opentofu to v1.8.6 460bfae
+* **deps:** update dependency opentofu to v1.8.8 ad178a0
+* **deps:** update dependency opentofu to v1.9.0 afd0d35
+* **deps:** update dependency opentofu to v1.9.1 2bb3e1f
+* **deps:** update dependency pre-commit to v4.1.0 f35154e
+* **deps:** update dependency pre-commit to v4.2.0 d85d046
+* **deps:** update dependency terraform-docs to v0.20.0 ea0859a
+* **deps:** update dependency tflint to v0.55.0 5657568
+* **deps:** update dependency tflint to v0.57.0 87971cb
+* **deps:** update dependency trivy to v0.57.1 41abdc7
+* **deps:** update dependency trivy to v0.58.1 d3e20c9
+* **deps:** update dependency trivy to v0.58.2 248b13b
+* **deps:** update dependency trivy to v0.59.1 43a57d9
+* **deps:** update dependency trivy to v0.60.0 691f1f1
+* **deps:** update dependency trivy to v0.61.1 7243670
+* **deps:** update dependency trivy to v0.62.0 bca5abe
+* **deps:** update dependency trivy to v0.62.1 5cf8a90
+* **deps:** update pre-commit hook alessandrojcm/commitlint-pre-commit-hook to v9.19.0 aa14040
+* **deps:** update pre-commit hook alessandrojcm/commitlint-pre-commit-hook to v9.20.0 a2c3624
+* **deps:** update pre-commit hook alessandrojcm/commitlint-pre-commit-hook to v9.21.0 07f12ea
+* **deps:** update pre-commit hook alessandrojcm/commitlint-pre-commit-hook to v9.22.0 93aad4d
+* **deps:** update pre-commit hook tofuutils/pre-commit-opentofu to v2.2.0 2cc0168
+* **deps:** update tools 5a147ce
+* **deps:** update tools 72a8e10
+* **deps:** update tools 4df6a9e
+* update Github templates 88ba98d
+* update tflint config for v0.55.0 46351f6
+
 ## 8.0.0 (2024-11-15)
 
 ### ⚠ BREAKING CHANGES
