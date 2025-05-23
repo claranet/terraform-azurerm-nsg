@@ -5,9 +5,9 @@ resource "azurerm_network_watcher_flow_log" "main" {
   network_watcher_name = var.use_existing_network_watcher ? one(data.azurerm_network_watcher.main[*].name) : var.network_watcher_name
   resource_group_name  = var.use_existing_network_watcher ? one(data.azurerm_network_watcher.main[*].resource_group_name) : coalesce(var.network_watcher_resource_group_name, var.resource_group_name)
 
-  network_security_group_id = azurerm_network_security_group.main.id
-  storage_account_id        = var.flow_log_storage_account_id
-  enabled                   = var.flow_log_logging_enabled
+  target_resource_id = azurerm_network_security_group.main.id
+  storage_account_id = var.flow_log_storage_account_id
+  enabled            = var.flow_log_logging_enabled
 
   location = var.use_existing_network_watcher ? coalesce(var.flow_log_location, one(data.azurerm_network_watcher.main[*].location)) : coalesce(var.flow_log_location, var.location)
 
