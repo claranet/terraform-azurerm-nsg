@@ -1,3 +1,9 @@
+## 8.0.2 (2025-05-23)
+
+### Bug Fixes
+
+* **flow log:** 🐛 replace deprecated `network_security_group_id` with `target_resource_id` new more generic attribute f5505a3
+
 ## 8.0.1 (2025-05-19)
 
 ### Bug Fixes
