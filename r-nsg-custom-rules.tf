@@ -2,6 +2,7 @@
 resource "azurerm_network_security_rule" "main" {
   for_each                    = { for index, v in var.additional_rules : v.name => v }
   name                        = each.value.name
+  description                 = each.value.description
   network_security_group_name = azurerm_network_security_group.main.name
   resource_group_name         = var.resource_group_name
 
