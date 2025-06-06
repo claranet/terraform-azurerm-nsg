@@ -16,6 +16,7 @@ resource "azurerm_network_security_rule" "deny_all_inbound" {
   count = var.all_inbound_denied ? 1 : 0
 
   name                        = "deny-all-inbound"
+  description                 = "Denies all inbound traffic to the virtual network"
   resource_group_name         = var.resource_group_name
   access                      = "Deny"
   direction                   = "Inbound"
@@ -37,6 +38,7 @@ resource "azurerm_network_security_rule" "http_inbound" {
   count = var.http_inbound_allowed ? 1 : 0
 
   name                        = "http-inbound"
+  description                 = "Allows HTTP (port 80) inbound traffic to the virtual network"
   resource_group_name         = var.resource_group_name
   access                      = "Allow"
   direction                   = "Inbound"
@@ -59,6 +61,7 @@ resource "azurerm_network_security_rule" "https_inbound" {
   count = var.https_inbound_allowed ? 1 : 0
 
   name                        = "https-inbound"
+  description                 = "Allows HTTPS (port 443) inbound traffic to the virtual network"
   resource_group_name         = var.resource_group_name
   access                      = "Allow"
   direction                   = "Inbound"
@@ -81,6 +84,7 @@ resource "azurerm_network_security_rule" "ssh_inbound" {
   count = var.ssh_inbound_allowed ? 1 : 0
 
   name                        = "ssh-inbound"
+  description                 = "Allows SSH (port 22) inbound traffic to the virtual network"
   resource_group_name         = var.resource_group_name
   access                      = "Allow"
   direction                   = "Inbound"
@@ -103,6 +107,7 @@ resource "azurerm_network_security_rule" "rdp_inbound" {
   count = var.rdp_inbound_allowed ? 1 : 0
 
   name                        = "rdp-inbound"
+  description                 = "Allows RDP (port 3389) inbound traffic to the virtual network"
   resource_group_name         = var.resource_group_name
   access                      = "Allow"
   direction                   = "Inbound"
@@ -125,6 +130,7 @@ resource "azurerm_network_security_rule" "winrm_inbound" {
   count = var.winrm_inbound_allowed ? 1 : 0
 
   name                        = "winrm-inbound"
+  description                 = "Allows WinRM (port 5986) inbound traffic to the virtual network"
   resource_group_name         = var.resource_group_name
   access                      = "Allow"
   direction                   = "Inbound"
@@ -147,6 +153,7 @@ resource "azurerm_network_security_rule" "appgw_health_probe_inbound" {
   count = var.application_gateway_rules_enabled ? 1 : 0
 
   name                        = "appgw-health-probe-inbound"
+  description                 = "Allows Application Gateway health probe inbound traffic on ports 65200-65535"
   resource_group_name         = var.resource_group_name
   access                      = "Allow"
   direction                   = "Inbound"
@@ -175,6 +182,7 @@ resource "azurerm_network_security_rule" "lb_health_probe_inbound" {
   count = var.application_gateway_rules_enabled || var.load_balancer_rules_enabled ? 1 : 0
 
   name                        = "lb-health-probe-inbound"
+  description                 = "Allows Load Balancer health probe inbound traffic from Azure Load Balancer"
   resource_group_name         = var.resource_group_name
   access                      = "Allow"
   direction                   = "Inbound"
@@ -196,6 +204,7 @@ resource "azurerm_network_security_rule" "nfs_inbound" {
   count = var.nfs_inbound_allowed ? 1 : 0
 
   name                        = "nfs-inbound"
+  description                 = "Allows NFS (port 2049) inbound traffic to the virtual network"
   resource_group_name         = var.resource_group_name
   access                      = "Allow"
   direction                   = "Inbound"
@@ -218,6 +227,7 @@ resource "azurerm_network_security_rule" "cifs_inbound" {
   count = var.cifs_inbound_allowed ? 1 : 0
 
   name                        = "cifs-inbound"
+  description                 = "Allows CIFS (ports 137, 138, 139, 445) inbound traffic to the virtual network"
   resource_group_name         = var.resource_group_name
   access                      = "Allow"
   direction                   = "Inbound"
