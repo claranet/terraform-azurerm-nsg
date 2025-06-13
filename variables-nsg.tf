@@ -119,8 +119,10 @@ variable "load_balancer_rules_enabled" {
 variable "additional_rules" {
   description = "Additional network security group rules to add. For arguements please refer to [documentation](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule#argument-reference)"
   type = list(object({
-    priority  = number
-    name      = string
+    priority    = number
+    name        = string
+    description = optional(string)
+
     direction = optional(string, "Inbound")
     access    = optional(string, "Allow")
     protocol  = optional(string, "Tcp")
