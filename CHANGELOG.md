@@ -1,3 +1,16 @@
+## 8.1.0 (2025-06-13)
+
+### Features
+
+* **GH-10:** ✨ add descriptions to inbound network security rules 0f80b6b
+* **GH-10:** ✨ add optional description field to additional_rules a68fb48
+
+### Miscellaneous Chores
+
+* **deps:** update dependency tflint to v0.58.0 3b2ba55
+* **deps:** update dependency trivy to v0.63.0 778d715
+* **deps:** update pre-commit hook tofuutils/pre-commit-opentofu to v2.2.1 2853018
+
 ## 8.0.2 (2025-05-23)
 
 ### Bug Fixes
