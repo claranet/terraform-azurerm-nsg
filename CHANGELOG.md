@@ -1,3 +1,26 @@
+## 8.1.1 (2025-09-17)
+
+### Bug Fixes
+
+* **GH-11:** 🐛 add rules precondition validation e34c1e4
+
+### Miscellaneous Chores
+
+* **⚙️:** ✏️ update template identifier for MR review 17c5ebc
+* 🗑️ remove old commitlint configuration files faf8bb9
+* **deps:** 🔗 bump AzureRM provider version to v4.31+ f81b99c
+* **deps:** update dependency opentofu to v1.10.0 f5cb7bb
+* **deps:** update dependency opentofu to v1.10.1 4448cc2
+* **deps:** update dependency opentofu to v1.10.3 7a137f0
+* **deps:** update dependency opentofu to v1.10.6 251bf8a
+* **deps:** update dependency tflint to v0.58.1 1ee40c2
+* **deps:** update dependency tflint to v0.59.1 828500f
+* **deps:** update dependency trivy to v0.66.0 7f35aa7
+* **deps:** update pre-commit hook pre-commit/pre-commit-hooks to v6 c4a1b04
+* **deps:** update tools d627be2
+* **deps:** update tools c6c4d5b
+* **deps:** update tools c4f8057
+
 ## 8.1.0 (2025-06-13)
 
 ### Features
