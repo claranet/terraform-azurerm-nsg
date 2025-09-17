@@ -50,6 +50,13 @@ resource "azurerm_network_security_rule" "http_inbound" {
   source_address_prefix       = try(tostring(var.http_source_allowed), null)
   source_address_prefixes     = try(tolist(var.http_source_allowed), null)
   destination_address_prefix  = "VirtualNetwork"
+
+  lifecycle {
+    precondition {
+      condition     = !var.http_inbound_allowed || (var.http_source_allowed != null && length(var.http_source_allowed) > 0)
+      error_message = "`http_source_allowed` must be set when `http_inbound_allowed` is enabled."
+    }
+  }
 }
 
 moved {
@@ -73,6 +80,13 @@ resource "azurerm_network_security_rule" "https_inbound" {
   source_address_prefix       = try(tostring(var.https_source_allowed), null)
   source_address_prefixes     = try(tolist(var.https_source_allowed), null)
   destination_address_prefix  = "VirtualNetwork"
+
+  lifecycle {
+    precondition {
+      condition     = !var.https_inbound_allowed || (var.https_source_allowed != null && length(var.https_source_allowed) > 0)
+      error_message = "`https_source_allowed` must be set when `https_inbound_allowed` is enabled."
+    }
+  }
 }
 
 moved {
@@ -96,6 +110,13 @@ resource "azurerm_network_security_rule" "ssh_inbound" {
   source_address_prefix       = try(tostring(var.ssh_source_allowed), null)
   source_address_prefixes     = try(tolist(var.ssh_source_allowed), null)
   destination_address_prefix  = "VirtualNetwork"
+
+  lifecycle {
+    precondition {
+      condition     = !var.ssh_inbound_allowed || (var.ssh_source_allowed != null && length(var.ssh_source_allowed) > 0)
+      error_message = "`ssh_source_allowed` must be set when `ssh_inbound_allowed` is enabled."
+    }
+  }
 }
 
 moved {
@@ -119,6 +140,13 @@ resource "azurerm_network_security_rule" "rdp_inbound" {
   source_address_prefix       = try(tostring(var.rdp_source_allowed), null)
   source_address_prefixes     = try(tolist(var.rdp_source_allowed), null)
   destination_address_prefix  = "VirtualNetwork"
+
+  lifecycle {
+    precondition {
+      condition     = !var.rdp_inbound_allowed || (var.rdp_source_allowed != null && length(var.rdp_source_allowed) > 0)
+      error_message = "`rdp_source_allowed` must be set when `rdp_inbound_allowed` is enabled."
+    }
+  }
 }
 
 moved {
@@ -142,6 +170,13 @@ resource "azurerm_network_security_rule" "winrm_inbound" {
   source_address_prefix       = try(tostring(var.winrm_source_allowed), null)
   source_address_prefixes     = try(tolist(var.winrm_source_allowed), null)
   destination_address_prefix  = "VirtualNetwork"
+
+  lifecycle {
+    precondition {
+      condition     = !var.winrm_inbound_allowed || (var.winrm_source_allowed != null && length(var.winrm_source_allowed) > 0)
+      error_message = "`winrm_source_allowed` must be set when `winrm_inbound_allowed` is enabled."
+    }
+  }
 }
 
 moved {
@@ -216,6 +251,13 @@ resource "azurerm_network_security_rule" "nfs_inbound" {
   source_address_prefix       = try(tostring(var.nfs_source_allowed), null)
   source_address_prefixes     = try(tolist(var.nfs_source_allowed), null)
   destination_address_prefix  = "VirtualNetwork"
+
+  lifecycle {
+    precondition {
+      condition     = !var.nfs_inbound_allowed || (var.nfs_source_allowed != null && length(var.nfs_source_allowed) > 0)
+      error_message = "`nfs_source_allowed` must be set when `nfs_inbound_allowed` is enabled."
+    }
+  }
 }
 
 moved {
@@ -239,6 +281,13 @@ resource "azurerm_network_security_rule" "cifs_inbound" {
   source_address_prefix       = try(tostring(var.cifs_source_allowed), null)
   source_address_prefixes     = try(tolist(var.cifs_source_allowed), null)
   destination_address_prefix  = "VirtualNetwork"
+
+  lifecycle {
+    precondition {
+      condition     = !var.cifs_inbound_allowed || (var.cifs_source_allowed != null && length(var.cifs_source_allowed) > 0)
+      error_message = "`cifs_source_allowed` must be set when `cifs_inbound_allowed` is enabled."
+    }
+  }
 }
 
 moved {
