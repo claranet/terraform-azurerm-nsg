@@ -1,3 +1,13 @@
+## 8.1.2 (2025-10-01)
+
+### Code Refactoring
+
+* **deps:** 🔗 update claranet/azurecaf to ~> 1.3.0 🔧 ccc3b22
+
+### Miscellaneous Chores
+
+* **deps:** update dependency trivy to v0.67.0 18c7cf5
+
 ## 8.1.1 (2025-09-17)
 
 ### Bug Fixes
