@@ -160,7 +160,7 @@ resource "azurerm_network_security_rule" "custom" {
 ## Providers
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | azurecaf | >= 1.2.28 |
 | azurerm | ~> 4.31 |
 
@@ -171,7 +171,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [azurerm_network_security_group.main](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_group) | resource |
 | [azurerm_network_security_rule.appgw_health_probe_inbound](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule) | resource |
 | [azurerm_network_security_rule.cifs_inbound](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule) | resource |
@@ -192,7 +192,7 @@ No modules.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | additional\_rules | Additional network security group rules to add. For arguements please refer to [documentation](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule#argument-reference) | <pre>list(object({<br/>    priority    = number<br/>    name        = string<br/>    description = optional(string)<br/><br/>    direction = optional(string, "Inbound")<br/>    access    = optional(string, "Allow")<br/>    protocol  = optional(string, "Tcp")<br/><br/>    source_port_range  = optional(string)<br/>    source_port_ranges = optional(list(string))<br/><br/>    destination_port_range  = optional(string)<br/>    destination_port_ranges = optional(list(string))<br/><br/>    source_address_prefix   = optional(string)<br/>    source_address_prefixes = optional(list(string))<br/><br/>    destination_address_prefix   = optional(string)<br/>    destination_address_prefixes = optional(list(string))<br/>  }))</pre> | `[]` | no |
 | all\_inbound\_denied | True to deny all inbound traffic by default. | `bool` | `true` | no |
 | application\_gateway\_rules\_enabled | True to configure rules mandatory for hosting an Application Gateway. See [documentation](https://docs.microsoft.com/en-us/azure/application-gateway/configuration-infrastructure#allow-access-to-a-few-source-ips) | `bool` | `false` | no |
@@ -241,7 +241,7 @@ No modules.
 ## Outputs
 
 | Name | Description |
-|------|-------------|
+| ---- | ----------- |
 | id | Network security group ID. |
 | name | Network security group name. |
 | network\_watcher\_flow\_log\_id | Network watcher flow log ID. |
