@@ -1,6 +1,7 @@
 output "resource" {
   description = "Network security group resource object."
   value       = azurerm_network_security_group.main
+  sensitive   = true
 }
 
 output "id" {
